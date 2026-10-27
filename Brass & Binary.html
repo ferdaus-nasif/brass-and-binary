@@ -1,0 +1,1290 @@
+<!doctype html><html><head><meta charset=utf8><meta name=viewport content="width=device-width,initial-scale=1,viewport-fit=cover"><style>:root{color-scheme:light;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}html{scroll-padding-top:env(safe-area-inset-top,0px)}body{margin:0;padding:0;font:14px -apple-system,BlinkMacSystemFont,sans-serif;background:#fff;color:#000}img{max-width:100%}[hidden]:not([hidden=until-found i]){display:none!important}</style></head><body>
+<title>Brass &amp; Binary</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&amp;family=Instrument+Serif:ital@0;1&amp;display=swap" rel="stylesheet">
+<style>
+/* Layout concept: a floating glass pill nav over wide editorial sections. Huge Instrument Serif headings with one italic brass word,
+   rounded glass panels, an ambient orb field, and a clear circular glass lens in place of the cursor. One deliberate dark look. */
+:root{
+  --bg:#06080d;
+  --bg-2:#0b0f17;
+  --surface:rgba(255,255,255,.045);
+  --surface-2:rgba(255,255,255,.085);
+  --line:rgba(255,255,255,.11);
+  --line-2:rgba(255,255,255,.22);
+  --text:#eef1f6;
+  --muted:#a6afbf;
+  --faint:#76808f;
+  --brass:#e3b968;
+  --brass-hi:#f2cf8a;
+  --brass-ink:#1b1406;
+  --ice:#92b6ea;
+  --silver:#cfd7e4;
+  --ok:#86d4a8;
+  --serif:'Instrument Serif',Georgia,'Times New Roman',serif;
+  --sans:'Inter',system-ui,-apple-system,'Segoe UI',Roboto,sans-serif;
+  --r-lg:32px;--r-md:22px;--r-sm:14px;
+  --ease:cubic-bezier(.22,.8,.24,1);
+  color-scheme:dark;
+}
+*{box-sizing:border-box}
+html.locked{overflow:hidden}
+body{
+  background:var(--bg);color:var(--text);
+  font-family:var(--sans);font-size:16px;line-height:1.65;font-weight:400;
+  padding-left:max(16px,env(safe-area-inset-left,0px));
+  padding-right:max(16px,env(safe-area-inset-right,0px));
+  padding-block:0;
+  -webkit-font-smoothing:antialiased;text-rendering:optimizeLegibility;
+  overflow-x:clip;
+}
+a{color:inherit}
+h1,h2,h3,h4{font-family:var(--serif);font-weight:400;letter-spacing:-.012em;margin:0;text-wrap:balance}
+h1{font-size:clamp(2.9rem,7.4vw,6.4rem);line-height:.96}
+h2{font-size:clamp(2.1rem,4.6vw,3.7rem);line-height:1.02}
+h3{font-size:clamp(1.45rem,2.2vw,1.9rem);line-height:1.12}
+h4{font-size:1.25rem;line-height:1.2}
+h1 em,h2 em,h3 em{font-style:italic;color:var(--brass)}
+h1:focus{outline:none}
+p{margin:0}
+.wrap{max-width:1180px;margin-inline:auto;min-width:0}
+.prose{max-width:62ch}
+.muted{color:var(--muted)}
+.lead{font-size:clamp(1.05rem,1.5vw,1.25rem);line-height:1.6;color:var(--muted);max-width:60ch}
+.eyebrow{display:inline-flex;align-items:center;gap:10px;font-size:.72rem;letter-spacing:.16em;text-transform:uppercase;color:var(--muted);font-weight:500}
+.eyebrow i{width:8px;height:8px;border-radius:50%;background:var(--brass);box-shadow:0 0 0 4px rgba(227,185,104,.16)}
+:focus-visible{outline:2px solid var(--ice);outline-offset:3px;border-radius:12px}
+
+/* ---------- ambient background ---------- */
+.bg{position:fixed;inset:0;z-index:-1;overflow:hidden;background:var(--bg)}
+.bg::after{content:"";position:absolute;inset:0;
+  background-image:linear-gradient(rgba(255,255,255,.035) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,.035) 1px,transparent 1px);
+  background-size:72px 72px;
+  -webkit-mask-image:radial-gradient(ellipse 80% 60% at 50% 25%,#000 20%,transparent 75%);
+  mask-image:radial-gradient(ellipse 80% 60% at 50% 25%,#000 20%,transparent 75%)}
+.orb{position:absolute;border-radius:50%;filter:blur(70px);animation:drift 30s ease-in-out infinite alternate}
+.orb.a{width:62vmax;height:62vmax;left:-20vmax;top:-26vmax;background:radial-gradient(circle,rgba(46,84,160,.62),transparent 66%)}
+.orb.b{width:48vmax;height:48vmax;right:-16vmax;top:18vh;background:radial-gradient(circle,rgba(227,185,104,.30),transparent 64%);animation-duration:38s;animation-delay:-8s}
+.orb.c{width:52vmax;height:52vmax;left:12vw;bottom:-30vmax;background:radial-gradient(circle,rgba(40,120,132,.34),transparent 66%);animation-duration:44s;animation-delay:-16s}
+@keyframes drift{from{transform:translate3d(0,0,0) scale(1)}to{transform:translate3d(6vmax,4vmax,0) scale(1.12)}}
+
+/* ---------- navigation ---------- */
+.nav-shell{position:fixed;z-index:30;
+  top:calc(14px + env(safe-area-inset-top,0px));
+  left:max(16px,env(safe-area-inset-left,0px));right:max(16px,env(safe-area-inset-right,0px));
+  pointer-events:none}
+.nav{pointer-events:auto;max-width:1040px;margin-inline:auto;height:58px;padding:7px 8px 7px 20px;border-radius:999px;
+  display:flex;align-items:center;justify-content:space-between;gap:12px;
+  background:rgba(12,16,24,.55);border:1px solid var(--line);
+  -webkit-backdrop-filter:blur(22px) saturate(1.6);backdrop-filter:blur(22px) saturate(1.6);
+  box-shadow:0 1px 0 rgba(255,255,255,.07) inset,0 18px 40px -18px rgba(0,0,0,.7)}
+.brand{display:inline-flex;align-items:center;gap:10px;text-decoration:none;font-family:var(--serif);font-size:1.3rem;letter-spacing:-.01em;white-space:nowrap}
+.brand svg{width:26px;height:26px;flex:none}
+.links{position:relative;display:flex;align-items:center;gap:2px}
+.links a{position:relative;z-index:1;display:inline-flex;align-items:center;height:42px;padding:0 14px;border-radius:999px;text-decoration:none;font-size:.86rem;font-weight:500;color:var(--muted);transition:color .3s}
+.links a:hover,.links a.active{color:var(--text)}
+.indicator{position:absolute;left:0;top:0;height:42px;width:0;border-radius:999px;background:var(--surface-2);border:1px solid var(--line);
+  box-shadow:inset 0 1px 0 rgba(255,255,255,.12);transition:transform .55s var(--ease),width .55s var(--ease),opacity .3s;pointer-events:none}
+.menu-btn{display:none;width:44px;height:44px;border-radius:50%;border:1px solid var(--line);background:var(--surface);color:var(--text);cursor:pointer;padding:0;align-items:center;justify-content:center;position:relative}
+.menu-btn span{position:absolute;left:14px;right:14px;height:1.5px;background:currentColor;border-radius:2px;transition:transform .45s var(--ease),top .45s var(--ease)}
+.menu-btn span:nth-child(1){top:17px}.menu-btn span:nth-child(2){top:25px}
+.menu-btn[aria-expanded="true"] span:nth-child(1){top:21px;transform:rotate(45deg)}
+.menu-btn[aria-expanded="true"] span:nth-child(2){top:21px;transform:rotate(-45deg)}
+@media (max-width:980px){.links{display:none}.menu-btn{display:inline-flex}}
+
+.sheet{position:fixed;inset:0;z-index:25;display:flex;flex-direction:column;justify-content:center;gap:4px;
+  padding-top:calc(96px + env(safe-area-inset-top,0px));padding-bottom:calc(32px + env(safe-area-inset-bottom,0px));
+  padding-left:max(24px,env(safe-area-inset-left,0px));padding-right:max(24px,env(safe-area-inset-right,0px));
+  background:rgba(5,7,11,.72);-webkit-backdrop-filter:blur(30px) saturate(1.4);backdrop-filter:blur(30px) saturate(1.4);
+  opacity:0;visibility:hidden;transition:opacity .4s ease,visibility 0s .4s;overflow-y:auto}
+.sheet.open{opacity:1;visibility:visible;transition:opacity .4s ease,visibility 0s}
+.sheet a{display:flex;align-items:baseline;justify-content:space-between;gap:16px;text-decoration:none;font-family:var(--serif);font-size:clamp(2rem,9vw,3.2rem);line-height:1.15;padding:6px 0;border-bottom:1px solid var(--line);
+  opacity:0;transform:translateY(18px);transition:opacity .5s var(--ease),transform .5s var(--ease),color .3s}
+.sheet.open a{opacity:1;transform:none;transition-delay:calc(var(--i)*45ms + 80ms)}
+.sheet a small{font-family:var(--sans);font-size:.72rem;letter-spacing:.14em;text-transform:uppercase;color:var(--faint)}
+.sheet a.active{color:var(--brass)}
+
+/* ---------- pages and transitions ---------- */
+.page{min-height:60vh}
+.page.leaving{opacity:0;transform:translateY(-14px) scale(.992);filter:blur(7px);transition:opacity .28s ease,transform .28s ease,filter .28s ease}
+.page.entering .wrap>*{animation:rise .85s var(--ease) backwards;animation-delay:calc(var(--i,0)*80ms)}
+@keyframes rise{from{opacity:0;transform:translateY(28px);filter:blur(9px)}to{opacity:1;transform:none;filter:none}}
+
+.phead{display:grid;gap:22px;padding-top:calc(clamp(112px,17vh,168px) + env(safe-area-inset-top,0px));padding-bottom:clamp(28px,5vw,56px);justify-items:start}
+.sec{padding-block:clamp(36px,6vw,80px)}
+.sec-head{display:grid;gap:14px;max-width:760px;margin-bottom:clamp(24px,3.5vw,40px);justify-items:start}
+.sec-head p{color:var(--muted);max-width:60ch}
+
+/* ---------- controls ---------- */
+.btn{display:inline-flex;align-items:center;gap:10px;height:52px;padding:0 24px;border-radius:999px;border:1px solid var(--line-2);color:var(--text);
+  text-decoration:none;font-weight:500;font-size:.95rem;cursor:pointer;font-family:var(--sans);
+  transition:transform .4s var(--ease),background .3s,border-color .3s,color .3s,box-shadow .4s}
+.btn:hover{transform:translateY(-2px)}
+.btn.primary{background:var(--brass);color:var(--brass-ink);border-color:transparent;box-shadow:0 12px 30px -12px rgba(227,185,104,.7)}
+.btn.primary:hover{background:var(--brass-hi)}
+.btn.ghost{background:var(--surface);-webkit-backdrop-filter:blur(14px);backdrop-filter:blur(14px)}
+.btn.ghost:hover{background:var(--surface-2);border-color:rgba(255,255,255,.34)}
+.cta-row{display:flex;flex-wrap:wrap;gap:12px}
+.chip{display:inline-flex;align-items:center;gap:8px;padding:6px 13px;border-radius:999px;border:1px solid var(--line);background:var(--surface);font-size:.78rem;font-weight:500;color:var(--muted);white-space:nowrap}
+.chip.b{color:var(--brass);border-color:rgba(227,185,104,.35);background:rgba(227,185,104,.08)}
+.chip.i{color:var(--ice);border-color:rgba(146,182,234,.35);background:rgba(146,182,234,.08)}
+.chips{display:flex;flex-wrap:wrap;gap:8px}
+.note{font-size:.82rem;color:var(--faint);max-width:56ch}
+
+/* ---------- panels ---------- */
+.panel{position:relative;border-radius:var(--r-lg);border:1px solid var(--line);padding:clamp(22px,3vw,36px);min-width:0;
+  background:linear-gradient(160deg,rgba(255,255,255,.075),rgba(255,255,255,.02) 56%);
+  -webkit-backdrop-filter:blur(18px) saturate(1.3);backdrop-filter:blur(18px) saturate(1.3);
+  box-shadow:0 1px 0 rgba(255,255,255,.07) inset,0 34px 60px -34px rgba(0,0,0,.75);
+  transition:transform .55s var(--ease),border-color .4s;isolation:isolate;overflow:hidden}
+.panel::before{content:"";position:absolute;inset:0;z-index:-1;opacity:0;transition:opacity .5s;pointer-events:none;
+  background:radial-gradient(360px circle at var(--mx,50%) var(--my,0%),rgba(227,185,104,.15),transparent 62%)}
+.panel:hover::before{opacity:1}
+a.panel{display:block;text-decoration:none;color:inherit}
+a.panel:hover{transform:translateY(-5px);border-color:var(--line-2)}
+.panel h3{margin-bottom:10px}
+.panel p+p{margin-top:12px}
+.panel p,.panel li{color:var(--muted)}
+.panel strong,.panel b{color:var(--text);font-weight:500}
+.grid{display:grid;gap:18px;grid-template-columns:repeat(auto-fit,minmax(min(100%,290px),1fr))}
+.grid.two{grid-template-columns:repeat(auto-fit,minmax(min(100%,420px),1fr))}
+.grid.four{grid-template-columns:repeat(auto-fit,minmax(min(100%,230px),1fr))}
+.orbdot{width:46px;height:46px;border-radius:50%;display:grid;place-items:center;border:1px solid var(--line-2);margin-bottom:22px;
+  background:radial-gradient(circle at 30% 25%,rgba(255,255,255,.2),rgba(255,255,255,.03) 60%);color:var(--brass);font-weight:600;font-size:.82rem;letter-spacing:.04em}
+.arrow{position:absolute;right:22px;bottom:22px;width:44px;height:44px;border-radius:50%;border:1px solid var(--line-2);display:grid;place-items:center;color:var(--text);transition:transform .5s var(--ease),background .3s,color .3s}
+a.panel:hover .arrow{transform:translateX(4px) rotate(-45deg);background:var(--brass);color:var(--brass-ink);border-color:transparent}
+a.panel.has-arrow{padding-bottom:84px}
+
+ul.ticks{list-style:none;margin:0;padding:0;display:grid;gap:11px}
+ul.ticks li{position:relative;padding-left:28px}
+ul.ticks li::before{content:"";position:absolute;left:2px;top:.55em;width:9px;height:9px;border-radius:50%;background:var(--brass);box-shadow:0 0 0 4px rgba(227,185,104,.15)}
+ul.ticks.cost li::before{background:var(--ice);box-shadow:0 0 0 4px rgba(146,182,234,.15)}
+.kv{display:grid;gap:0}
+.kv div{display:flex;justify-content:space-between;gap:16px;padding:12px 0;border-bottom:1px solid var(--line)}
+.kv div:last-child{border-bottom:0}
+.kv dt{color:var(--muted)}.kv dd{margin:0;text-align:right;font-weight:500;font-variant-numeric:tabular-nums}
+dl.kv{margin:0}
+
+/* ---------- table ---------- */
+.tbl{overflow-x:auto;border-radius:var(--r-md);border:1px solid var(--line);background:rgba(255,255,255,.025)}
+.tbl table{width:100%;min-width:620px;border-collapse:collapse;font-size:.93rem}
+.tbl th{font-size:.7rem;letter-spacing:.14em;text-transform:uppercase;color:var(--faint);font-weight:500;text-align:left;padding:16px 20px;border-bottom:1px solid var(--line)}
+.tbl td{padding:16px 20px;border-bottom:1px solid var(--line);vertical-align:top;color:var(--muted)}
+.tbl tr:last-child td{border-bottom:0}
+.tbl td:first-child{color:var(--text);font-weight:500;white-space:nowrap}
+.tbl td.num,.tbl th.num{text-align:right;font-variant-numeric:tabular-nums}
+.tbl tbody tr{transition:background .3s}
+.tbl tbody tr:hover{background:rgba(255,255,255,.035)}
+
+/* ---------- hero (home) ---------- */
+.hero{display:grid;grid-template-columns:minmax(0,1.12fr) minmax(0,.88fr);gap:clamp(24px,5vw,64px);align-items:center;
+  padding-top:calc(clamp(112px,16vh,160px) + env(safe-area-inset-top,0px));padding-bottom:clamp(24px,4vw,48px)}
+.hero-copy{display:grid;gap:26px;justify-items:start}
+@media (max-width:880px){.hero{grid-template-columns:1fr}}
+.orbit{position:relative;width:min(100%,470px);aspect-ratio:1;margin-inline:auto;overflow:hidden;border-radius:50%}
+.ring{--d:90s;position:absolute;border-radius:50%;border:1px solid var(--line-2);animation:spin var(--d) linear infinite}
+.ring.rev{animation-direction:reverse}
+.r1{inset:11%}.r2{inset:28%;--d:64s;border-style:dashed;border-color:rgba(255,255,255,.16)}
+.node{position:absolute;transform:translate(-50%,-50%)}
+.node span{display:block;padding:7px 13px;border-radius:999px;font-size:.74rem;font-weight:500;white-space:nowrap;color:var(--text);
+  background:rgba(16,21,31,.7);border:1px solid var(--line-2);-webkit-backdrop-filter:blur(10px);backdrop-filter:blur(10px);animation:spin var(--d) linear infinite reverse}
+.ring.rev .node span{animation-direction:normal}
+.node.b span{color:var(--brass);border-color:rgba(227,185,104,.45)}
+.core{position:absolute;inset:36%;border-radius:50%;display:grid;place-content:center;text-align:center;gap:2px;
+  background:radial-gradient(circle at 30% 24%,rgba(255,255,255,.22),rgba(255,255,255,.04) 60%);border:1px solid var(--line-2);
+  box-shadow:0 0 80px rgba(227,185,104,.18),inset 0 1px 0 rgba(255,255,255,.2)}
+.core b{font-family:var(--serif);font-weight:400;font-size:clamp(2.2rem,5.6vw,3.5rem);line-height:1;color:var(--text)}
+.core small{font-size:.58rem;letter-spacing:.14em;text-transform:uppercase;color:var(--muted);line-height:1.35}
+@keyframes spin{to{transform:rotate(360deg)}}
+
+.ledger{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,190px),1fr));border-top:1px solid var(--line);border-bottom:1px solid var(--line);margin-top:clamp(12px,2vw,24px)}
+.ledger div{padding:26px 22px 26px 0;display:grid;gap:6px;align-content:start}
+.ledger div+div{padding-left:22px;border-left:1px solid var(--line)}
+.ledger b{font-family:var(--serif);font-weight:400;font-size:clamp(2rem,3.4vw,2.9rem);line-height:1;color:var(--text)}
+.ledger span{font-size:.84rem;color:var(--muted);line-height:1.45}
+@media (max-width:620px){.ledger div+div{border-left:0;padding-left:0}.ledger div{border-bottom:1px solid var(--line)}.ledger div:last-child{border-bottom:0}}
+
+.path{display:flex;flex-wrap:wrap;align-items:center;gap:10px}
+.path .chip{height:44px;padding:0 20px;font-size:.9rem;color:var(--text)}
+.path .sep{color:var(--faint)}
+
+/* ---------- command tree ---------- */
+.tree{display:grid;justify-items:center;gap:0}
+.tnode{border-radius:var(--r-md);border:1px solid var(--line);padding:14px 18px;text-align:center;display:grid;gap:3px;background:var(--surface);min-width:0;width:100%}
+.tnode b{font-family:var(--serif);font-weight:400;font-size:1.3rem;line-height:1.1}
+.tnode small{color:var(--muted);font-size:.78rem;line-height:1.4}
+.tnode.hl{border-color:rgba(227,185,104,.5);background:rgba(227,185,104,.08)}
+.tnode.hl b{color:var(--brass)}
+.tnode.top{max-width:340px}
+.ttier{position:relative;display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:14px;width:100%;padding-top:30px;margin-top:30px}
+.ttier::before{content:"";position:absolute;top:0;left:12.5%;right:12.5%;height:1px;background:var(--line-2)}
+.ttier::after{content:"";position:absolute;top:-30px;left:50%;height:30px;width:1px;background:var(--line-2)}
+.ttier>.tnode{position:relative}
+.ttier>.tnode::before{content:"";position:absolute;top:-30px;left:50%;height:30px;width:1px;background:var(--line-2)}
+.ttier.sub{grid-template-columns:repeat(3,minmax(0,1fr));margin-top:30px}
+.ttier.sub::before{left:16.66%;right:16.66%}
+@media (max-width:760px){
+  .ttier,.ttier.sub{grid-template-columns:1fr;padding-top:0;margin-top:14px}
+  .ttier::before,.ttier::after,.ttier>.tnode::before{display:none}
+}
+
+/* ---------- timeline ---------- */
+.steps{--fill:0;position:relative;list-style:none;margin:0;padding:0;display:grid;gap:18px}
+.steps::before,.steps::after{content:"";position:absolute;left:21px;top:22px;width:2px;border-radius:2px}
+.steps::before{bottom:22px;background:var(--line)}
+.steps::after{height:calc((100% - 44px)*var(--fill));background:linear-gradient(var(--brass),rgba(227,185,104,.55))}
+.step{position:relative;display:grid;grid-template-columns:44px minmax(0,1fr);gap:clamp(14px,3vw,28px);align-items:start}
+.step .dot{width:44px;height:44px;border-radius:50%;display:grid;place-items:center;font-weight:600;font-size:.88rem;color:var(--muted);
+  background:var(--bg-2);border:1px solid var(--line-2);position:relative;z-index:1;transition:background .5s var(--ease),color .5s,border-color .5s,transform .5s var(--ease)}
+.step.reached .dot{background:var(--brass);color:var(--brass-ink);border-color:transparent;transform:scale(1.06)}
+.step .panel{padding:clamp(20px,2.6vw,30px)}
+.step .meta{display:flex;flex-wrap:wrap;gap:8px;margin-top:16px}
+
+.bar{display:flex;gap:6px;height:84px}
+.seg{min-width:0;border-radius:18px;border:1px solid var(--line);background:var(--surface);padding:12px 14px;display:grid;align-content:center;gap:2px;overflow:hidden}
+.seg b{font-weight:500;font-size:.9rem;white-space:nowrap}
+.seg small{color:var(--muted);font-size:.72rem;line-height:1.3}
+.seg.hl{border-color:rgba(227,185,104,.5);background:rgba(227,185,104,.1)}
+.seg.long{border-color:rgba(146,182,234,.45);background:rgba(146,182,234,.09)}
+
+/* ---------- accordion ---------- */
+.acc{border-bottom:1px solid var(--line)}
+.acc:first-child{border-top:1px solid var(--line)}
+.acc>button{all:unset;box-sizing:border-box;width:100%;display:flex;align-items:center;justify-content:space-between;gap:20px;padding:22px 4px;cursor:pointer;font-family:var(--serif);font-size:clamp(1.3rem,2.2vw,1.65rem);line-height:1.2}
+.acc>button:focus-visible{outline:2px solid var(--ice);outline-offset:2px;border-radius:12px}
+.acc .pm{flex:none;width:36px;height:36px;border-radius:50%;border:1px solid var(--line-2);position:relative;transition:transform .5s var(--ease),background .3s}
+.acc .pm::before,.acc .pm::after{content:"";position:absolute;left:10px;right:10px;top:17px;height:1.5px;background:currentColor;transition:transform .5s var(--ease)}
+.acc .pm::after{transform:rotate(90deg)}
+.acc.open .pm{transform:rotate(180deg);background:var(--surface-2)}
+.acc.open .pm::after{transform:rotate(0)}
+.acc .body{display:grid;grid-template-rows:0fr;transition:grid-template-rows .5s var(--ease)}
+.acc.open .body{grid-template-rows:1fr}
+.acc .body>div{overflow:hidden}
+.acc .body p{padding:0 56px 24px 4px;color:var(--muted);max-width:68ch}
+
+/* ---------- calculator ---------- */
+.calc{display:grid;grid-template-columns:minmax(0,.9fr) minmax(0,1.1fr);gap:clamp(20px,3vw,40px)}
+@media (max-width:860px){.calc{grid-template-columns:1fr}}
+.field{display:grid;gap:8px}
+.field label,.lbl{font-size:.72rem;letter-spacing:.14em;text-transform:uppercase;color:var(--faint);font-weight:500}
+.inputs{display:grid;gap:20px}
+.two-col{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+select,input[type=number],input[type=search]{width:100%;height:50px;border-radius:16px;border:1px solid var(--line-2);background:rgba(255,255,255,.05);color:var(--text);padding:0 16px;font:inherit;font-size:.98rem;transition:border-color .3s,background .3s}
+select option{background:#0f141d;color:var(--text)}
+select:hover,input:hover{border-color:rgba(255,255,255,.34)}
+input[type=range]{width:100%;accent-color:var(--brass);height:28px}
+html.has-lens select,html.has-lens input{cursor:auto!important}
+.presets{display:flex;flex-wrap:wrap;gap:8px}
+.presets button{all:unset;box-sizing:border-box;cursor:pointer;padding:9px 15px;border-radius:999px;border:1px solid var(--line-2);font-size:.82rem;font-weight:500;color:var(--text);background:var(--surface);transition:background .3s,transform .4s var(--ease),border-color .3s}
+.presets button:hover{background:var(--surface-2);transform:translateY(-2px)}
+.presets button.on{background:var(--brass);color:var(--brass-ink);border-color:transparent}
+.presets button:focus-visible{outline:2px solid var(--ice);outline-offset:2px}
+.out{display:grid;gap:22px;align-content:start}
+.big{font-family:var(--serif);font-size:clamp(3rem,6vw,4.6rem);line-height:1;letter-spacing:-.02em;font-variant-numeric:tabular-nums}
+.big small{font-family:var(--sans);font-size:.9rem;color:var(--muted);letter-spacing:0;margin-left:6px}
+.split{display:flex;height:16px;border-radius:999px;overflow:hidden;gap:3px;background:rgba(255,255,255,.04)}
+.split i{display:block;height:100%;border-radius:999px;transition:flex-grow .6s var(--ease)}
+.split .s1{background:var(--brass)}.split .s2{background:var(--ice)}.split .s3{background:var(--silver)}
+.legend{display:flex;flex-wrap:wrap;gap:8px 20px;font-size:.82rem;color:var(--muted)}
+.legend span::before{content:"";display:inline-block;width:9px;height:9px;border-radius:50%;margin-right:8px;background:var(--c)}
+
+/* ---------- rank ladder ---------- */
+.ladder{display:grid;gap:10px}
+.rank{display:grid;grid-template-columns:96px minmax(0,1fr) auto;gap:clamp(14px,2.6vw,28px);align-items:center;padding:16px clamp(16px,2.6vw,26px);border-radius:var(--r-md);border:1px solid var(--line);background:var(--surface);transition:background .4s,border-color .4s,transform .5s var(--ease)}
+.rank:hover{background:var(--surface-2);border-color:var(--line-2);transform:translateX(4px)}
+.rank .glyph{display:flex;align-items:center;justify-content:center;gap:3px;height:48px;border-radius:14px;background:rgba(0,0,0,.28);border:1px solid var(--line)}
+.rank .glyph svg{width:20px;height:20px;fill:currentColor}
+.rank .glyph.gold{color:var(--brass)}.rank .glyph.silver{color:var(--silver)}
+.rank .glyph.stack{flex-direction:column;gap:5px}
+.rank .glyph.stack svg{width:22px;height:8px}
+.rank .glyph.wide svg{width:28px;height:28px}
+.rank h4{display:flex;flex-wrap:wrap;align-items:baseline;gap:4px 12px}
+.rank h4 small{font-family:var(--sans);font-size:.7rem;letter-spacing:.14em;text-transform:uppercase;color:var(--faint)}
+.rank p{font-size:.9rem;color:var(--muted);margin-top:4px;line-height:1.5}
+.rank .pay{text-align:right;font-variant-numeric:tabular-nums;white-space:nowrap}
+.rank .pay b{display:block;font-weight:500;font-size:1.02rem}
+.rank .pay small{color:var(--faint);font-size:.74rem}
+@media (max-width:640px){.rank{grid-template-columns:72px minmax(0,1fr)}.rank .pay{grid-column:2;text-align:left}}
+
+.arc{position:relative;height:150px;margin:8px 14px 0}
+.arc .axis{position:absolute;left:0;right:0;top:56px;height:2px;border-radius:2px;background:linear-gradient(90deg,var(--brass),rgba(255,255,255,.18) 70%)}
+.arc .tick{position:absolute;top:70px;left:calc(var(--y)/30*100%);transform:translateX(-50%);font-size:.72rem;color:var(--faint);font-variant-numeric:tabular-nums}
+.arc .tick.hot{color:var(--brass);font-weight:600}
+.arc .twenty{position:absolute;left:calc(20/30*100%);top:34px;height:48px;border-left:1px dashed var(--brass)}
+.arc .m{position:absolute;left:calc(var(--y)/30*100%);top:57px;width:16px;height:16px;margin:-8px 0 0 -8px;border-radius:50%;background:var(--bg);border:2px solid var(--brass)}
+.arc .m b{position:absolute;left:50%;transform:translateX(-50%);font-weight:500;font-size:.78rem;color:var(--text);white-space:nowrap}
+.arc .m.up b{bottom:24px}.arc .m.down b{top:24px}
+
+/* ---------- glossary ---------- */
+.terms{display:grid;grid-template-columns:repeat(auto-fill,minmax(min(100%,330px),1fr));gap:12px;margin-top:20px}
+.term{padding:18px 20px;border-radius:var(--r-md);border:1px solid var(--line);background:var(--surface)}
+.term b{display:block;font-family:var(--serif);font-weight:400;font-size:1.3rem;line-height:1.1;margin-bottom:4px;color:var(--brass)}
+.term span{font-size:.9rem;color:var(--muted);line-height:1.5}
+.term[hidden]{display:none}
+.empty{color:var(--muted);padding:24px 0}
+
+/* ---------- footer ---------- */
+footer{border-top:1px solid var(--line);margin-top:clamp(40px,7vw,96px);padding-block:clamp(36px,5vw,64px) calc(48px + env(safe-area-inset-bottom,0px))}
+.foot{display:grid;grid-template-columns:minmax(0,1.4fr) minmax(0,.8fr) minmax(0,1.2fr);gap:clamp(24px,4vw,56px)}
+@media (max-width:860px){.foot{grid-template-columns:1fr}}
+.foot h5{margin:0 0 12px;font-size:.7rem;letter-spacing:.16em;text-transform:uppercase;color:var(--faint);font-weight:500}
+.foot ul{list-style:none;margin:0;padding:0;display:grid;gap:8px;font-size:.88rem}
+.foot a{color:var(--muted);text-decoration:none;transition:color .3s}
+.foot a:hover{color:var(--brass)}
+.foot p{font-size:.84rem;color:var(--faint);max-width:52ch;margin-top:12px}
+.src a{text-decoration:underline;text-decoration-color:var(--line-2);text-underline-offset:3px}
+
+/* ---------- glass lens cursor ---------- */
+.lens,.dot{position:fixed;left:0;top:0;pointer-events:none;z-index:100;opacity:0;transition:opacity .3s;will-change:transform}
+.lens.on,.dot.on{opacity:1}
+.lens-glass{position:absolute;left:0;top:0;width:48px;height:48px;margin:-24px 0 0 -24px;border-radius:50%;
+  -webkit-backdrop-filter:blur(.7px) saturate(1.9) brightness(1.24) contrast(1.06);backdrop-filter:blur(.7px) saturate(1.9) brightness(1.24) contrast(1.06);
+  background:radial-gradient(120% 120% at 27% 20%,rgba(255,255,255,.34),rgba(255,255,255,.07) 38%,rgba(255,255,255,0) 62%),radial-gradient(100% 100% at 72% 88%,rgba(146,182,234,.18),transparent 56%);
+  box-shadow:inset 0 0 0 1px rgba(255,255,255,.36),inset 1.5px 2px 3px rgba(255,255,255,.55),inset -2px -3px 7px rgba(146,182,234,.3),inset 0 -9px 16px rgba(227,185,104,.14),0 12px 30px -6px rgba(0,0,0,.6);
+  transition:transform .5s var(--ease),opacity .3s}
+.lens-glass.grow{transform:scale(1.85)}
+.lens-glass.press{transform:scale(.8)}
+.lens-glass.grow.press{transform:scale(1.5)}
+.dot i{position:absolute;left:0;top:0;width:6px;height:6px;margin:-3px 0 0 -3px;border-radius:50%;background:#fff;box-shadow:0 0 0 1px rgba(0,0,0,.35);transition:transform .35s var(--ease)}
+.dot.hide i{transform:scale(0)}
+.lens.faint{opacity:.35}
+html.has-lens,html.has-lens *{cursor:none!important}
+html.has-lens select,html.has-lens input,html.has-lens select *{cursor:auto!important}
+
+@media (prefers-reduced-motion:reduce){
+  *,*::before,*::after{animation-duration:.001ms!important;animation-iteration-count:1!important;transition-duration:.001ms!important;transition-delay:0s!important}
+  .orb,.ring,.node span{animation:none!important}
+}
+</style>
+
+<svg width="0" height="0" style="position:absolute" aria-hidden="true" focusable="false">
+  <defs>
+    <symbol id="g-star" viewBox="0 0 24 24"><path d="M12 2l2.9 6.3 6.9.8-5.1 4.7 1.4 6.8L12 17.1 5.9 20.6l1.4-6.8L2.2 9.1l6.9-.8z"/></symbol>
+    <symbol id="g-leaf" viewBox="0 0 24 24"><path d="M12 2c5 3.4 8 8.4 6 13-1 2.3-3.2 4-6 7-2.8-3-5-4.7-6-7-2-4.600 1-9.600 6-13z"/></symbol>
+    <symbol id="g-bar" viewBox="0 0 24 8"><rect x="1" y="1" width="22" height="6" rx="1.5"/></symbol>
+    <symbol id="g-eagle" viewBox="0 0 24 24"><path d="M12 4c1.2 0 2 .9 2 2 0 .5-.2 1-.5 1.300C16 7.500 19.200 9 22.500 12.500c-3.100-.9-5.500-.6-7.500.4.300 1.500.8 2.900 1.800 4.500-1.900-.3-3.200-.9-4.800-2.200-1.600 1.300-2.900 1.900-4.800 2.200 1-1.600 1.500-3 1.800-4.500-2-1-4.400-1.300-7.500-.4C4.800 9 8 7.500 10.500 7.300 10.200 7 10 6.500 10 6c0-1.100.8-2 2-2z"/></symbol>
+  </defs>
+</svg>
+
+<div class="bg" aria-hidden="true"><div class="orb a"></div><div class="orb b"></div><div class="orb c"></div></div>
+
+<header class="nav-shell">
+  <nav class="nav" aria-label="Primary">
+    <a class="brand" href="#home" data-route="home-brand" aria-label="Brass and Binary, home">
+      <svg viewBox="0 0 26 26" aria-hidden="true"><circle cx="11" cy="13" r="8" fill="none" stroke="#e3b968" stroke-width="2"/><rect x="19.500" y="4" width="3" height="18" rx="1.500" fill="#eef1f6"/></svg>
+      Brass &amp; Binary
+    </a>
+    <div class="links" id="links">
+      <span class="indicator" aria-hidden="true"></span>
+      <a href="#home" data-route="home">Home</a>
+      <a href="#army-cyber" data-route="army-cyber">Army Cyber</a>
+      <a href="#commands" data-route="commands">Commands</a>
+      <a href="#bases" data-route="bases">Bases</a>
+      <a href="#join" data-route="join">Join</a>
+      <a href="#benefits" data-route="benefits">Pay</a>
+      <a href="#why-army" data-route="why-army">Why serve</a>
+      <a href="#ranks" data-route="ranks">Ranks</a>
+    </div>
+    <button class="menu-btn" id="menuBtn" type="button" aria-expanded="false" aria-controls="sheet" aria-label="Menu"><span></span><span></span></button>
+  </nav>
+</header>
+
+<div class="sheet" id="sheet" aria-label="Menu">
+  <a href="#home" data-route="home" style="--i:0">Home <small>Overview</small></a>
+  <a href="#army-cyber" data-route="army-cyber" style="--i:1">Army Cyber <small>The branch</small></a>
+  <a href="#commands" data-route="commands" style="--i:2">Commands <small>ARCYBER, CYBERCOM</small></a>
+  <a href="#bases" data-route="bases" style="--i:3">Bases <small>Gordon, Meade</small></a>
+  <a href="#join" data-route="join" style="--i:4">Join <small>The process</small></a>
+  <a href="#benefits" data-route="benefits" style="--i:5">Pay &amp; benefits <small>Estimator</small></a>
+  <a href="#why-army" data-route="why-army" style="--i:6">Why serve <small>Versus civilian</small></a>
+  <a href="#ranks" data-route="ranks" style="--i:7">Ranks <small>And terms</small></a>
+</div>
+
+<main id="main">
+
+<!-- ======================= HOME ======================= -->
+<section class="page" id="p-home" data-page="home">
+  <div class="wrap">
+    <div class="hero">
+      <div class="hero-copy">
+        <span class="eyebrow"><i></i>A field guide to U.S. Army cyber</span>
+        <h1>Fight in the <em>fifth domain.</em></h1>
+        <p class="lead">Everything about becoming an Army Cyber Warfare Officer in one place. The commands you would serve in, the posts you would live on, the exact path from first call to first team, and what the job pays and gives back.</p>
+        <div class="cta-row">
+          <a class="btn primary" href="#join">Start the path <span aria-hidden="true">→</span></a>
+          <a class="btn ghost" href="#benefits">See what it pays</a>
+        </div>
+        <p class="note">Independent guide, not an official Army publication. Confirm every requirement with an Army officer recruiter.</p>
+      </div>
+      <div class="orbit" role="img" aria-label="Diagram: the 17A Cyber Warfare Officer at the center, surrounded by offense, defense and DODIN operations, with electronic warfare and joint integration on the inner ring.">
+        <div class="ring r1">
+          <div class="node b" style="left:50%;top:0"><span>Offense</span></div>
+          <div class="node" style="left:93.3%;top:75%"><span>Defense</span></div>
+          <div class="node" style="left:6.7%;top:75%"><span>DODIN ops</span></div>
+        </div>
+        <div class="ring r2 rev">
+          <div class="node" style="left:75%;top:6.7%"><span>EW</span></div>
+          <div class="node" style="left:25%;top:93.3%"><span>Joint</span></div>
+        </div>
+        <div class="core"><b>17A</b><small>Cyber Warfare<br>Officer</small></div>
+      </div>
+    </div>
+
+    <div class="ledger" role="list">
+      <div role="listitem"><b>12 wks</b><span>Army Officer Candidate School at Fort Benning</span></div>
+      <div role="listitem"><b>6–9 mo</b><span>Cyber officer basic course at Fort Gordon</span></div>
+      <div role="listitem"><b>$0</b><span>TRICARE Prime enrollment fee, deductible and copays for active-duty members</span></div>
+      <div role="listitem"><b>30 days</b><span>Paid leave every year</span></div>
+      <div role="listitem"><b>3.8%</b><span>Basic pay raise in 2026</span></div>
+    </div>
+
+    <div class="sec">
+      <div class="sec-head">
+        <span class="eyebrow"><i></i>The job</span>
+        <h2>Three missions, <em>one officer.</em></h2>
+        <p>A Cyber Warfare Officer plans, leads and executes cyberspace operations at Army and joint levels, and commands the teams that carry them out.</p>
+      </div>
+      <div class="grid">
+        <div class="panel"><div class="orbdot">OCO</div><h3>Offensive operations</h3><p>Create effects against adversary systems and networks when a commander or the nation needs them, as part of a larger operation.</p></div>
+        <div class="panel"><div class="orbdot">DCO</div><h3>Defensive operations</h3><p>Hunt for threats inside the networks the Army and the joint force rely on, and remove them before they cost a mission.</p></div>
+        <div class="panel"><div class="orbdot">DODIN</div><h3>Network operations</h3><p>Build, run and secure the Department of Defense Information Network that every other operation depends on.</p></div>
+      </div>
+    </div>
+
+    <div class="sec">
+      <div class="sec-head">
+        <span class="eyebrow"><i></i>The path at a glance</span>
+        <h2>From civilian to <em>your first team.</em></h2>
+      </div>
+      <div class="path">
+        <span class="chip">Qualify</span><span class="sep">→</span>
+        <span class="chip">Commission</span><span class="sep">→</span>
+        <span class="chip">Branch Cyber</span><span class="sep">→</span>
+        <span class="chip">Cyber school, Fort Gordon</span><span class="sep">→</span>
+        <span class="chip b">Cyber Mission Force team</span>
+      </div>
+      <p style="margin-top:26px"><a class="btn ghost" href="#join">Read the full process <span aria-hidden="true">→</span></a></p>
+    </div>
+
+    <div class="sec">
+      <div class="sec-head">
+        <span class="eyebrow"><i></i>Explore</span>
+        <h2>Everything you <em>need to know.</em></h2>
+      </div>
+      <div class="grid">
+        <a class="panel has-arrow" href="#army-cyber"><h3>Army Cyber</h3><p>The branch, the career fields and the teams that do the work.</p><span class="arrow" aria-hidden="true">→</span></a>
+        <a class="panel has-arrow" href="#commands"><h3>Commands</h3><p>Army Cyber Command and U.S. Cyber Command, and how they fit together.</p><span class="arrow" aria-hidden="true">→</span></a>
+        <a class="panel has-arrow" href="#bases"><h3>Bases</h3><p>Fort Gordon, Fort Meade and Fort Benning, and what each one is for.</p><span class="arrow" aria-hidden="true">→</span></a>
+        <a class="panel has-arrow" href="#join"><h3>Join</h3><p>Eligibility, the ASVAB, Officer Candidate School and CyBOLC, step by step.</p><span class="arrow" aria-hidden="true">→</span></a>
+        <a class="panel has-arrow" href="#benefits"><h3>Pay &amp; benefits</h3><p>An estimator for 2026 pay, plus TRICARE, housing, retirement and more.</p><span class="arrow" aria-hidden="true">→</span></a>
+        <a class="panel has-arrow" href="#why-army"><h3>Why serve</h3><p>How it compares with a civilian cyber job, including what it costs you.</p><span class="arrow" aria-hidden="true">→</span></a>
+        <a class="panel has-arrow" href="#ranks"><h3>Ranks &amp; terms</h3><p>Every officer rank, a career arc, and a searchable glossary of acronyms.</p><span class="arrow" aria-hidden="true">→</span></a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ======================= ARMY CYBER ======================= -->
+<section class="page" id="p-army-cyber" data-page="army-cyber" hidden>
+  <div class="wrap">
+    <div class="phead">
+      <span class="eyebrow"><i></i>The branch</span>
+      <h1>Army <em>Cyber</em></h1>
+      <p class="lead">The Army created its Cyber Branch in 2014, the first new basic branch since Special Forces in 1987. Today it fields officers, warrant officers, enlisted soldiers and civilians who defend Army networks and conduct cyberspace operations for the joint force.</p>
+    </div>
+
+    <div class="sec">
+      <div class="sec-head">
+        <span class="eyebrow"><i></i>What a 17A does</span>
+        <h2>Lead the operation, <em>command the team.</em></h2>
+      </div>
+      <div class="grid two">
+        <div class="panel">
+          <h3>On the job</h3>
+          <ul class="ticks">
+            <li>Plan, integrate, synchronize and execute defensive and offensive cyberspace operations and DODIN operations at Army and joint, interagency and multinational levels.</li>
+            <li>Command, lead and manage Cyber Mission Force teams and the units around them.</li>
+            <li>Understand friendly and adversary cyberspace capabilities, objectives and organizations, and brief commanders who may never have taken a cybersecurity course.</li>
+            <li>Early in a career, lead a team of soldiers and Army civilians focused on one cyberspace mission, such as network defense or intelligence-driven targeting.</li>
+          </ul>
+        </div>
+        <div class="panel">
+          <h3>Your tools of the trade</h3>
+          <ul class="ticks">
+            <li>Army and joint doctrine, policy and legal authorities for cyberspace operations.</li>
+            <li>Cyber and electronic warfare threat knowledge, and the electromagnetic spectrum fundamentals behind it.</li>
+            <li>Planning and synchronization skills that fold cyber effects into a commander's wider plan.</li>
+            <li>Network, antenna, electro-optic and space-based capability fundamentals taught at the Cyber School.</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <div class="sec">
+      <div class="sec-head">
+        <span class="eyebrow"><i></i>Career fields</span>
+        <h2>More than <em>one door</em> into cyber.</h2>
+        <p>Officers are the focus of this site, but the branch has a lane for almost every background.</p>
+      </div>
+      <div class="tbl"><table>
+        <thead><tr><th>Field</th><th>Who</th><th>What they do</th></tr></thead>
+        <tbody>
+          <tr><td>17A Cyber Warfare Officer</td><td>Commissioned officer</td><td>Plans and leads offensive, defensive and DODIN operations. Commands Cyber Mission Force teams.</td></tr>
+          <tr><td>17B Cyber and Electromagnetic Warfare Officer</td><td>17A officer, later</td><td>Adds electronic warfare. Requires 17A qualification first, a TS/SCI clearance and about three more months of training.</td></tr>
+          <tr><td>17D Cyber Capability Development Officer</td><td>Commissioned officer</td><td>Builds the software, tools and capabilities that operators use.</td></tr>
+          <tr><td>Cyber warrant officer</td><td>Technical expert</td><td>Deep technical specialists, trained through the Warrant Officer Basic and Advanced courses at the Cyber School.</td></tr>
+          <tr><td>17C Cyber Operations Specialist</td><td>Enlisted soldier</td><td>Cyber attack, defense and intelligence work on the teams. Trained at the Cyber School after enlisting with a high school diploma or equivalent.</td></tr>
+          <tr><td>Army civilian cyber workforce</td><td>Government civilian</td><td>Civilians work beside soldiers across the same commands.</td></tr>
+        </tbody>
+      </table></div>
+    </div>
+
+    <div class="sec">
+      <div class="sec-head">
+        <span class="eyebrow"><i></i>Where the work happens</span>
+        <h2>The Cyber <em>Mission Force.</em></h2>
+        <p>U.S. Cyber Command's operational arm is the Cyber Mission Force, built from 133 teams supplied by all the services. Army cyber officers lead many of them.</p>
+      </div>
+      <div class="grid">
+        <div class="panel"><h3>Cyber National Mission Force</h3><p>Teams that defend the nation against significant cyber threats and conduct operations under national direction.</p></div>
+        <div class="panel"><h3>Cyber Protection Force</h3><p>Cyber Protection Teams that defend the Department of Defense's networks and key systems.</p></div>
+        <div class="panel"><h3>Cyber Combat Mission Force</h3><p>Teams that support combatant commanders with cyber effects for their operations.</p></div>
+      </div>
+    </div>
+
+    <div class="sec">
+      <div class="panel" style="display:grid;gap:18px;justify-items:start">
+        <h3>Cyber has its own selection board</h3>
+        <p class="prose">Commissioning does not automatically put you in Cyber. The Cyber School runs a Cyber Branch Assessment and Selection Process with an interview, an aptitude assessment, a written questionnaire and a review of your supporting packet. Direct commissioning, covered on the Join page, is the one route that places you in Cyber from the start.</p>
+        <a class="btn primary" href="#join">See the full process <span aria-hidden="true">→</span></a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ======================= COMMANDS ======================= -->
+<section class="page" id="p-commands" data-page="commands" hidden>
+  <div class="wrap">
+    <div class="phead">
+      <span class="eyebrow"><i></i>The chain of command</span>
+      <h1>Two commands, <em>one fight.</em></h1>
+      <p class="lead">U.S. Cyber Command sets the joint mission. Army Cyber Command provides the Army's forces and runs the Army's cyberspace operations. As a 17A you would serve in or alongside both.</p>
+    </div>
+
+    <div class="sec">
+      <div class="grid two">
+        <div class="panel">
+          <span class="chip b" style="margin-bottom:18px">Army component</span>
+          <h3>Army Cyber Command (ARCYBER)</h3>
+          <p>The Army's operational cyber headquarters. It directs and conducts cyberspace operations and is also designated the Army's Joint Force Headquarters-Cyber, which supports U.S. Cyber Command.</p>
+          <dl class="kv" style="margin-top:20px">
+            <div><dt>Established</dt><dd>2010</dd></div>
+            <div><dt>Headquarters</dt><dd>Fort Gordon, Georgia</dd></div>
+            <div><dt>Commander</dt><dd>Lt. Gen. Christopher Eubank</dd></div>
+            <div><dt>In command since</dt><dd>December 2025</dd></div>
+            <div><dt>Liaison element</dt><dd>Fort Meade, Maryland</dd></div>
+          </dl>
+          <p>The Army chose Fort Gordon in 2013 so that its operational headquarters would sit beside the Cyber School, NSA-Georgia and most of its cyber mission forces. Leaders describe the current focus as setting the land domain through cyber, defending the homeland and adopting AI-enabled operations.</p>
+        </div>
+        <div class="panel">
+          <span class="chip i" style="margin-bottom:18px">Joint command</span>
+          <h3>U.S. Cyber Command (USCYBERCOM)</h3>
+          <p>The unified combatant command that conducts offensive and defensive cyberspace operations for the nation and the joint force. It shares Fort Meade with the National Security Agency.</p>
+          <dl class="kv" style="margin-top:20px">
+            <div><dt>Established</dt><dd>2010</dd></div>
+            <div><dt>Combatant command since</dt><dd>2018</dd></div>
+            <div><dt>Headquarters</dt><dd>Fort Meade, Maryland</dd></div>
+            <div><dt>Commander</dt><dd>Gen. Joshua Rudd</dd></div>
+            <div><dt>Confirmed</dt><dd>March 10, 2026</dd></div>
+          </dl>
+          <p>Rudd is a four-star Army general who also serves as director of the NSA. The command is pursuing a force generation strategy called CYBERCOM 2.0, aimed at making the force more agile and recruiting top talent.</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="sec">
+      <div class="sec-head">
+        <span class="eyebrow"><i></i>How they connect</span>
+        <h2>Where Army cyber <em>sits.</em></h2>
+        <p>Each service supplies a component to U.S. Cyber Command. Two subordinate commands run continuing operations. Army Cyber Command is highlighted.</p>
+      </div>
+      <div class="panel">
+        <div class="tree">
+          <div class="tnode top"><b>U.S. Cyber Command</b><small>Fort Meade, MD · Gen. Joshua Rudd</small></div>
+          <div class="ttier">
+            <div class="tnode hl"><b>Army Cyber Command</b><small>Fort Gordon, GA<br>Lt. Gen. Christopher Eubank</small></div>
+            <div class="tnode"><b>Fleet Cyber Command</b><small>U.S. Navy</small></div>
+            <div class="tnode"><b>Marine Forces Cyberspace Command</b><small>U.S. Marine Corps</small></div>
+            <div class="tnode"><b>Air Forces Cyber</b><small>16th Air Force</small></div>
+          </div>
+        </div>
+        <div class="tree" style="margin-top:48px">
+          <div class="tnode top"><b>Also under CYBERCOM</b><small>Subordinate unified commands</small></div>
+          <div class="ttier sub" style="grid-template-columns:repeat(2,minmax(0,1fr));max-width:720px">
+            <div class="tnode"><b>Cyber National Mission Force</b><small>Led by Brig. Gen. Matthew Lennox since March 2026</small></div>
+            <div class="tnode"><b>DoD Cyber Defense Command</b><small>Formerly JFHQ-DODIN</small></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="sec">
+      <div class="sec-head"><span class="eyebrow"><i></i>Inside ARCYBER</span><h2>Units you <em>may hear about.</em></h2></div>
+      <div class="grid four">
+        <div class="panel"><h4>Army JFHQ-Cyber</h4><p style="margin-top:8px;font-size:.92rem">The Army element that supports U.S. Cyber Command and combatant commanders.</p></div>
+        <div class="panel"><h4>Cyber Protection Brigade</h4><p style="margin-top:8px;font-size:.92rem">Trains, mans, equips and employs the Army's Cyber Protection Teams.</p></div>
+        <div class="panel"><h4>Cyber Center of Excellence</h4><p style="margin-top:8px;font-size:.92rem">Fort Gordon home of the Cyber School, Signal School and cyber doctrine. It reports through Training and Doctrine Command.</p></div>
+        <div class="panel"><h4>Army Cyber Institute</h4><p style="margin-top:8px;font-size:.92rem">The Army's cyber research and thought-leadership organization, based at West Point.</p></div>
+      </div>
+    </div>
+
+    <div class="sec src"><p class="note">Sources: <a href="https://www.everycrsreport.com/files/2025-12-22_IF13042_1c3445b378dfb2de5db1d7f156f3e54a18138794.html" target="_blank" rel="noopener">CRS Defense Primer on CYBERCOM</a>, <a href="https://www.nextgov.com/people/2026/03/senate-confirms-josh-rudd-lead-nsa-and-cyber-command/412015" target="_blank" rel="noopener">Nextgov on the Rudd confirmation</a>, <a href="https://theaugustapress.com/army-cyber-command-changes-command-at-fort-gordon/" target="_blank" rel="noopener">Augusta Press on ARCYBER's change of command</a>, <a href="https://www.army.mil/article/293143/honorable_sutton_and_pugh_engage_with_army_cyber_leaders_and_soldiers_at_fort_gordon" target="_blank" rel="noopener">Army.mil, June 2026</a>, <a href="https://www.cybercom.mil/About/Leadership/Bio-Display/Article/3205739/commander-cnmf/" target="_blank" rel="noopener">CYBERCOM leadership</a>.</p></div>
+  </div>
+</section>
+
+<!-- ======================= BASES ======================= -->
+<section class="page" id="p-bases" data-page="bases" hidden>
+  <div class="wrap">
+    <div class="phead">
+      <span class="eyebrow"><i></i>Where you will live</span>
+      <h1>Three posts <em>that matter.</em></h1>
+      <p class="lead">Cyber officers train and serve at two main hubs, with a detour through Fort Benning for Officer Candidate School. In the first Cyber BOLC class, 11 graduates went to Fort Gordon, nine to Fort Meade and one to Korea.</p>
+    </div>
+
+    <div class="sec">
+      <div class="grid two">
+        <div class="panel">
+          <span class="chip b" style="margin-bottom:18px">Train and serve</span>
+          <h3>Fort Gordon, Georgia</h3>
+          <p>Next to Augusta and roughly a two-and-a-half-hour drive from Atlanta. It is the home of Army cyber training and of Army Cyber Command headquarters.</p>
+          <ul class="ticks" style="margin-top:18px">
+            <li>Army Cyber Center of Excellence and the Army Cyber School, where you take Cyber BOLC.</li>
+            <li>Army Cyber Command headquarters and Army JFHQ-Cyber.</li>
+            <li>NSA-Georgia, a major signals intelligence and cyber site beside the Army's cyber mission forces.</li>
+            <li>The Signal School, which shares the campus and classrooms.</li>
+          </ul>
+          <p>Lower local housing costs than the Washington region mean a housing allowance goes further here.</p>
+          <p class="note" style="margin-top:16px">Name history: Fort Gordon became Fort Eisenhower in 2023 and returned to Fort Gordon on June 10, 2025. It now honors Master Sgt. Gary Gordon, a Medal of Honor recipient from the Battle of Mogadishu.</p>
+        </div>
+        <div class="panel">
+          <span class="chip i" style="margin-bottom:18px">Serve</span>
+          <h3>Fort George G. Meade, Maryland</h3>
+          <p>Between Baltimore and Washington, D.C. It is the center of gravity for joint and national cyber operations.</p>
+          <ul class="ticks" style="margin-top:18px">
+            <li>U.S. Cyber Command headquarters.</li>
+            <li>The National Security Agency, with Cyber Command's operations integrated beside it.</li>
+            <li>The Cyber National Mission Force and the DoD Cyber Defense Command.</li>
+            <li>An ARCYBER liaison element working directly with CYBERCOM.</li>
+          </ul>
+          <p>A new NSA and CYBERCOM East Campus is scheduled for completion in 2028 and is planned to house more than 20,000 personnel. Housing costs are higher here, and so is the housing allowance.</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="sec">
+      <div class="panel" style="display:grid;gap:14px;justify-items:start">
+        <span class="chip" style="margin-bottom:4px">Commissioning</span>
+        <h3>Fort Benning, Georgia</h3>
+        <p class="prose">Home of Army Officer Candidate School, a 12-week course at the Maneuver Center of Excellence in Columbus. The post was named Fort Moore from 2023 until April 2025 and again honors Cpl. Fred G. Benning, a World War I Distinguished Service Cross recipient. You only pass through here if you commission through OCS.</p>
+      </div>
+    </div>
+
+    <div class="sec">
+      <div class="sec-head"><span class="eyebrow"><i></i>Side by side</span><h2>At a <em>glance.</em></h2></div>
+      <div class="tbl"><table>
+        <thead><tr><th>Post</th><th>State</th><th>Role in your career</th><th>Key organizations</th></tr></thead>
+        <tbody>
+          <tr><td>Fort Benning</td><td>Georgia</td><td>Officer Candidate School</td><td>Maneuver Center of Excellence</td></tr>
+          <tr><td>Fort Gordon</td><td>Georgia</td><td>Cyber BOLC, later courses, many first assignments</td><td>Cyber School, ARCYBER, NSA-Georgia</td></tr>
+          <tr><td>Fort Meade</td><td>Maryland</td><td>Joint and national cyber assignments</td><td>CYBERCOM, NSA, Cyber National Mission Force</td></tr>
+        </tbody>
+      </table></div>
+    </div>
+
+    <div class="sec src"><p class="note">Sources: <a href="https://www.wrdw.com/2025/06/11/return-fort-gordon-name-takes-effect-immediately" target="_blank" rel="noopener">WRDW on Fort Gordon's name</a>, <a href="https://georgiarecorder.com/?p=38673" target="_blank" rel="noopener">Georgia Recorder on Fort Benning</a>, <a href="https://www.army.mil/article/168856/Graduation_marks_important_milestone_in_Army_Cyber_School_history" target="_blank" rel="noopener">Army.mil on the first Cyber BOLC class</a>, <a href="https://www.executivegov.com/articles/gen-paul-nakasone-assumes-leadership-of-cybercom-nsa" target="_blank" rel="noopener">ExecutiveGov on the Fort Meade East Campus</a>.</p></div>
+  </div>
+</section>
+
+<!-- ======================= JOIN ======================= -->
+<section class="page" id="p-join" data-page="join" hidden>
+  <div class="wrap">
+    <div class="phead">
+      <span class="eyebrow"><i></i>The process</span>
+      <h1>How to become a <em>Cyber Warfare Officer</em></h1>
+      <p class="lead">There is no single door. You can commission through West Point, ROTC, Officer Candidate School or a direct commission, then branch into Cyber and train at Fort Gordon. This page walks the most common route for a civilian with a degree.</p>
+    </div>
+
+    <div class="sec">
+      <div class="sec-head"><span class="eyebrow"><i></i>Before you apply</span><h2>Are you <em>eligible?</em></h2></div>
+      <div class="grid two">
+        <div class="panel">
+          <h3>The baseline</h3>
+          <ul class="ticks">
+            <li><b>U.S. citizen.</b> The Cyber School lists citizenship as a requirement, and the Top Secret clearance needs it.</li>
+            <li><b>Bachelor's degree</b> to attend federal OCS. ROTC and West Point build the degree into the path.</li>
+            <li><b>ASVAB GT score of 110 or higher</b> for OCS. Retesting is allowed.</li>
+            <li><b>Age:</b> federal OCS applicants generally need to commission before their 34th birthday. Waivers exist.</li>
+            <li><b>Medically, physically and morally qualified.</b> You will take the Army fitness test.</li>
+          </ul>
+        </div>
+        <div class="panel">
+          <h3>The cyber layer</h3>
+          <ul class="ticks">
+            <li><b>Clearance.</b> Eligible for Secret to start, then a Top Secret/SCI investigation begins when you are branched Cyber.</li>
+            <li><b>Cyber Branch selection.</b> Interview, aptitude assessment, written questionnaire and a packet review.</li>
+            <li><b>Technical credibility.</b> A degree in computing, engineering or math helps. Certifications, internships, competitions and real work experience strengthen a packet.</li>
+            <li><b>Leadership record.</b> Boards look for people who can lead soldiers, not only operate tools.</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <div class="sec">
+      <div class="sec-head"><span class="eyebrow"><i></i>Pick your door</span><h2>Five ways to <em>earn the bars.</em></h2></div>
+      <div class="tbl"><table>
+        <thead><tr><th>Route</th><th>Time to commission</th><th>Key requirements</th><th>Good to know</th></tr></thead>
+        <tbody>
+          <tr><td>West Point</td><td>4 years</td><td>Apply in high school, nominated and admitted</td><td>Cadets branch by class rank and preference.</td></tr>
+          <tr><td>ROTC</td><td>2 to 4 years beside college</td><td>Enroll as early as freshman year, or as late as junior year</td><td>Scholarship cadets owe four years of active duty, then can finish in the Reserve.</td></tr>
+          <tr><td>Officer Candidate School</td><td>12 weeks, plus about 10 weeks of Basic Combat Training if you have no prior service</td><td>Bachelor's degree, GT 110, commission before age 34</td><td>Fastest route for a graduate. Does not guarantee a Cyber slot.</td></tr>
+          <tr><td>Direct commission</td><td>Short Direct Commission Course</td><td>Proven leadership, strong communication, at least eight years of cyber experience</td><td>Places you in Cyber. Selective, and historically small in number.</td></tr>
+          <tr><td>Guard or Reserve OCS</td><td>One weekend a month for 18 months, or an 8-week accelerated course</td><td>GT 110, at least 90 college credits, commission before 42</td><td>Lets you serve part time and keep a civilian career.</td></tr>
+        </tbody>
+      </table></div>
+    </div>
+
+    <div class="sec">
+      <div class="sec-head">
+        <span class="eyebrow"><i></i>Civilian timeline, to scale</span>
+        <h2>About a year <em>from ship date to cyber officer.</em></h2>
+        <p>Widths show relative length in weeks for a candidate with no prior service who commissions through OCS. Waits for your packet, clearance and class dates sit on top of this.</p>
+      </div>
+      <div class="bar" role="img" aria-label="Timeline: Basic Combat Training about 10 weeks, Officer Candidate School 12 weeks, Cyber BOLC about 26 to 39 weeks.">
+        <div class="seg" style="flex:10"><b>BCT</b><small>~10 wks</small></div>
+        <div class="seg hl" style="flex:12"><b>OCS</b><small>12 wks</small></div>
+        <div class="seg long" style="flex:32"><b>Cyber BOLC</b><small>6–9 months, about 26–39 wks</small></div>
+      </div>
+      <p class="note" style="margin-top:14px">The Cyber BOLC bar uses a midpoint of its published range. The first class in 2015 ran 37 weeks.</p>
+    </div>
+
+    <div class="sec">
+      <div class="sec-head"><span class="eyebrow"><i></i>Step by step</span><h2>The OCS <em>pipeline.</em></h2></div>
+      <ol class="steps">
+        <li class="step"><span class="dot">1</span><div class="panel"><h3>Talk to an Army officer recruiter</h3><p>Ask about OCS, Cyber and direct commissioning. A recruiter builds your packet, schedules testing and walks you through the board. Bring your transcripts and any certifications.</p><div class="meta"><span class="chip">Start here</span></div></div></li>
+        <li class="step"><span class="dot">2</span><div class="panel"><h3>Take the ASVAB</h3><p>The Armed Services Vocational Aptitude Battery measures what you can learn. For officers the number that matters is the GT (General Technical) line score, built from the verbal and arithmetic reasoning sections. OCS requires a 110 or higher. If you miss it you can retest. Officer candidates who need a score can also take the Armed Forces Classification Test.</p><div class="meta"><span class="chip b">GT 110 or higher</span><span class="chip">Retest allowed</span></div></div></li>
+        <li class="step"><span class="dot">3</span><div class="panel"><h3>Clear medical and fitness</h3><p>You complete a medical screening at a Military Entrance Processing Station and must meet height, weight and Army fitness standards. Start training early. OCS is a physical course.</p><div class="meta"><span class="chip">MEPS physical</span><span class="chip">Army fitness test</span></div></div></li>
+        <li class="step"><span class="dot">4</span><div class="panel"><h3>Compete for selection</h3><p>Your packet goes to an OCS selection board that weighs your degree, test scores, leadership record, character and interview. Separately, the Cyber School runs its own assessment and selection for the Cyber Branch.</p><div class="meta"><span class="chip">OCS board</span><span class="chip i">Cyber Branch assessment</span></div></div></li>
+        <li class="step"><span class="dot">5</span><div class="panel"><h3>Basic Combat Training</h3><p>If you have no prior service you first enlist under an officer candidate option and complete about 10 weeks of Basic Combat Training before OCS.</p><div class="meta"><span class="chip">About 10 weeks</span></div></div></li>
+        <li class="step"><span class="dot">6</span><div class="panel"><h3>Officer Candidate School</h3><p>Twelve weeks at Fort Benning. The first half builds leadership fundamentals, and the second half moves to field exercises where you lead others under evaluation. Candidates are paid at roughly an E-5 rate. You graduate and commission as a second lieutenant.</p><div class="meta"><span class="chip b">12 weeks</span><span class="chip">Fort Benning, GA</span></div></div></li>
+        <li class="step"><span class="dot">7</span><div class="panel"><h3>Clearance investigation</h3><p>When you are branched Cyber you start a Top Secret/SCI investigation. Investigators look at finances, foreign contacts, drug use, conduct and honesty. Some assignments also need a polygraph. Keep your record clean from today.</p><div class="meta"><span class="chip">TS/SCI</span></div></div></li>
+        <li class="step"><span class="dot">8</span><div class="panel"><h3>Cyber BOLC at Fort Gordon</h3><p>The Cyber Warfare Officer Basic Officer Leader Course, often called CyBOLC, runs roughly six to nine months. You study doctrine, policy and authorities, cyber and electronic warfare threats, planning and synchronization, the electromagnetic spectrum, networks and signals intelligence support. You graduate qualified as a 17A.</p><div class="meta"><span class="chip i">6–9 months</span><span class="chip">Fort Gordon, GA</span></div></div></li>
+        <li class="step"><span class="dot">9</span><div class="panel"><h3>Your first Cyber Mission Force team</h3><p>You report to a team at Fort Gordon, Fort Meade or another cyber unit. Around your fourth year you attend the Captains Career Course at the Cyber School, and you begin leading larger groups.</p><div class="meta"><span class="chip b">First assignment</span></div></div></li>
+      </ol>
+    </div>
+
+    <div class="sec">
+      <div class="grid two">
+        <div class="panel">
+          <h3>Direct commissioning</h3>
+          <p>The Army Talent Innovation Division brings in civilian technologists as officers. Cyber candidates should show proven leadership in tactical or technical settings, strong communication and at least eight years of cyber-related experience. In 2026 the Army said it is expanding direct commissions in cyber, AI and space at the lieutenant and captain level. Historically the program has commissioned fewer than 50 officers a year, mostly in medicine, law and the chaplaincy, so treat it as selective.</p>
+        </div>
+        <div class="panel">
+          <h3>Service obligation</h3>
+          <p>How long you owe depends on your commissioning source and the training you receive. ROTC scholarship cadets owe four years of active duty. Government auditors have noted that Army guidance on obligations for advanced cyber training has been unclear. Ask your recruiter to put your exact obligation in writing before you sign.</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="sec">
+      <div class="sec-head"><span class="eyebrow"><i></i>Questions</span><h2>Common <em>questions.</em></h2></div>
+      <div>
+        <div class="acc"><button type="button" aria-expanded="false"><span>Do I need a computer science degree?</span><i class="pm" aria-hidden="true"></i></button><div class="body"><div><p>No. OCS asks for a bachelor's degree in any field. The Cyber Branch selection process weighs technical aptitude, so computing, engineering, math and cybersecurity backgrounds are more competitive, and certifications or work experience can offset a different major.</p></div></div></div>
+        <div class="acc"><button type="button" aria-expanded="false"><span>I do not have a degree yet. What are my options?</span><i class="pm" aria-hidden="true"></i></button><div class="body"><div><p>Join ROTC at a college, apply to West Point, or enlist first and finish a degree with Army tuition assistance before applying to OCS. Enlisted soldiers can also earn a degree and commission through programs such as Green to Gold.</p></div></div></div>
+        <div class="acc"><button type="button" aria-expanded="false"><span>Does commissioning through OCS guarantee Cyber?</span><i class="pm" aria-hidden="true"></i></button><div class="body"><div><p>No. Branch assignments depend on the needs of the Army and on the Cyber Branch's own selection. Army Cyber's commander said in 2017 that direct commissioning is the route that guarantees placement as a cyber officer, while OCS and ROTC graduates cannot be guaranteed a slot.</p></div></div></div>
+        <div class="acc"><button type="button" aria-expanded="false"><span>Can I serve part time in the Guard or Reserve?</span><i class="pm" aria-hidden="true"></i></button><div class="body"><div><p>Yes. The Army National Guard and Army Reserve field cyber teams and commission cyber officers, and active officers in other branches can apply to transfer into Cyber through published Guard and Reserve transfer procedures. Expect additional schooling before you are awarded the 17A qualification.</p></div></div></div>
+        <div class="acc"><button type="button" aria-expanded="false"><span>What are 17B and 17D?</span><i class="pm" aria-hidden="true"></i></button><div class="body"><div><p>17B is the Cyber and Electromagnetic Warfare Officer, a follow-on qualification that adds electronic warfare. 17D is the Cyber Capability Development Officer, who builds tools and software for the force.</p></div></div></div>
+      </div>
+    </div>
+
+    <div class="sec src"><p class="note">Sources: <a href="https://us-army-cyber-school.breezy.hr/p/a2571e5372de-17a-cyber-warfare-officer" target="_blank" rel="noopener">Army Cyber School 17A page</a>, <a href="https://us-army-cyber-school.breezy.hr/p/91dde11f27c0-17b-cyber-electromagnetic-warfare-officer" target="_blank" rel="noopener">Army Cyber School 17B page</a>, <a href="https://dod.hawaii.gov/hiarng/recruiting-and-retention/ocs/" target="_blank" rel="noopener">OCS requirements</a>, <a href="https://www.army.mil/article/287517/cyber_officers_join_oklahoma_guard_through_direct_commissioning_program" target="_blank" rel="noopener">Army.mil on cyber direct commissions</a>, <a href="https://news.clearancejobs.com/2026/03/06/why-the-u-s-army-is-commissioning-cyber-and-ai-experts-instead-of-hiring-them/" target="_blank" rel="noopener">ClearanceJobs on direct commissioning</a>, <a href="https://www.army.mil/article/154001/army_cyber_school_marks_major_milestone" target="_blank" rel="noopener">Army.mil on the first Cyber BOLC</a>, <a href="https://augusta.edu/militaryscience/army-cyber-science.php" target="_blank" rel="noopener">ROTC cyber pathway</a>, <a href="https://www.gao.gov/assets/d23105423high.pdf" target="_blank" rel="noopener">GAO on cyber service obligations</a>, <a href="https://www.goarmy.com/" target="_blank" rel="noopener">GoArmy</a>.</p></div>
+  </div>
+</section>
+
+<!-- ======================= BENEFITS ======================= -->
+<section class="page" id="p-benefits" data-page="benefits" hidden>
+  <div class="wrap">
+    <div class="phead">
+      <span class="eyebrow"><i></i>Pay &amp; benefits</span>
+      <h1>What <em>active duty</em> actually pays</h1>
+      <p class="lead">Base pay is the first line of a larger package. The 2026 raise was 3.8%. Use the estimator with real 2026 officer pay, then read the benefits that never show up on a paycheck.</p>
+    </div>
+
+    <div class="sec">
+      <div class="panel calc">
+        <div class="inputs">
+          <div class="field"><span class="lbl">Jump to a career point</span>
+            <div class="presets" id="presets">
+              <button type="button" data-g="0" data-y="0" data-b="2000" class="on">New 2LT</button>
+              <button type="button" data-g="2" data-y="4" data-b="2200">Captain</button>
+              <button type="button" data-g="3" data-y="6" data-b="2400">Major</button>
+              <button type="button" data-g="4" data-y="9" data-b="2500">Lt. Colonel</button>
+            </div>
+          </div>
+          <div class="two-col">
+            <div class="field"><label for="grade">Pay grade</label><select id="grade"></select></div>
+            <div class="field"><label for="yos">Years of service</label><select id="yos"></select></div>
+          </div>
+          <div class="field"><label for="bah">Monthly housing allowance (BAH)</label><input id="bah" type="number" min="0" step="50" value="2000" inputmode="numeric"><p class="note">Example amount. Look up your real rate by duty station ZIP code, grade and dependents on the Defense Travel Management Office BAH calculator.</p></div>
+          <div class="field"><label for="tax">Your marginal tax rate: <span id="taxv">22%</span></label><input id="tax" type="range" min="10" max="35" step="1" value="22"><p class="note">Used only to estimate what the tax-free allowances are worth.</p></div>
+        </div>
+        <div class="out" aria-live="polite">
+          <div><span class="lbl">Estimated monthly cash</span><div class="big"><span id="o-month">$0</span><small>per month</small></div></div>
+          <div>
+            <div class="split" role="img" aria-label="Share of monthly pay from base pay, housing allowance and food allowance"><i class="s1" id="b-base" style="flex-grow:1"></i><i class="s2" id="b-bah" style="flex-grow:1"></i><i class="s3" id="b-bas" style="flex-grow:1"></i></div>
+            <div class="legend" style="margin-top:12px"><span style="--c:var(--brass)">Base pay</span><span style="--c:var(--ice)">Housing (BAH)</span><span style="--c:var(--silver)">Food (BAS)</span></div>
+          </div>
+          <dl class="kv">
+            <div><dt>Base pay</dt><dd id="o-base">$0</dd></div>
+            <div><dt>Housing allowance, tax-free</dt><dd id="o-bah">$0</dd></div>
+            <div><dt>Food allowance (officer BAS), tax-free</dt><dd id="o-bas">$328.48</dd></div>
+            <div><dt>Total cash per year</dt><dd id="o-year">$0</dd></div>
+            <div><dt>Civilian pre-tax pay needed to match</dt><dd id="o-equiv">$0</dd></div>
+          </dl>
+          <p class="note">2026 basic pay for O-1 to O-6, effective January 1, 2026. Prior-enlisted officers use higher O-1E to O-3E rows that are not shown. Bonuses, special pays and state tax rules are not included.</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="sec">
+      <div class="sec-head"><span class="eyebrow"><i></i>Beyond the paycheck</span><h2>The benefits <em>stack.</em></h2></div>
+      <div class="grid">
+        <div class="panel"><div class="orbdot">+</div><h3>Health care</h3><p>TRICARE Prime has no enrollment fee, deductible or copays for active-duty members, and military pharmacies fill prescriptions at no cost. Family members on Prime also pay nothing for covered care. Dental is included for you, and families use a separate dental plan.</p></div>
+        <div class="panel"><div class="orbdot">+</div><h3>Housing</h3><p>The Basic Allowance for Housing is tax-free and set to cover about 95% of typical local housing costs. Rate protection keeps it from dropping while you stay at the same post. You can also choose on-post housing.</p></div>
+        <div class="panel"><div class="orbdot">+</div><h3>Food</h3><p>The Basic Allowance for Subsistence is a flat, tax-free monthly payment: $328.48 for officers in 2026. It does not vary by location or rank.</p></div>
+        <div class="panel"><div class="orbdot">+</div><h3>The Exchange and commissary</h3><p>The Exchange sells everyday goods and electronics without sales tax. Commissaries sell groceries at close to cost. Both are open to active-duty members and families on and near most posts.</p></div>
+        <div class="panel"><div class="orbdot">+</div><h3>Retirement</h3><p>Under the Blended Retirement System you earn a pension after 20 years, 40% of your highest 36-month average base pay for life. You also get a Thrift Savings Plan with 1% automatic contributions and up to 4% matched, so up to 5% from the government.</p></div>
+        <div class="panel"><div class="orbdot">+</div><h3>Education</h3><p>Tuition assistance helps pay for courses while you serve. The Post-9/11 GI Bill covers up to 36 months of school, housing and books, and eligible members can transfer it to family. Army recruiting advertises up to 46 nationally recognized certifications across cyber roles.</p></div>
+        <div class="panel"><div class="orbdot">+</div><h3>Time off</h3><p>Thirty days of paid leave a year, earned at 2.5 days a month, plus federal holidays that are normally non-duty days.</p></div>
+        <div class="panel"><div class="orbdot">+</div><h3>Home and family</h3><p>VA-backed home loans allow no down payment for eligible borrowers. Low-cost Servicemembers' Group Life Insurance is available, and moves between posts are paid for by the Army.</p></div>
+        <div class="panel"><div class="orbdot">+</div><h3>Retention pay</h3><p>The Army has offered retention bonuses to cyber officers in the past because private-sector demand for the same skills is high. Amounts change and are not guaranteed.</p></div>
+      </div>
+    </div>
+
+    <div class="sec">
+      <div class="sec-head"><span class="eyebrow"><i></i>2026 officer basic pay</span><h2>Reference <em>table.</em></h2><p>Monthly base pay at selected years of service.</p></div>
+      <div class="tbl"><table>
+        <thead><tr><th>Grade</th><th class="num">Under 2</th><th class="num">4+</th><th class="num">8+</th><th class="num">12+</th><th class="num">16+</th><th class="num">20+</th></tr></thead>
+        <tbody>
+          <tr><td>O-1 Second Lt.</td><td class="num">$4,150</td><td class="num">$5,222</td><td class="num">$5,222</td><td class="num">$5,222</td><td class="num">$5,222</td><td class="num">$5,222</td></tr>
+          <tr><td>O-2 First Lt.</td><td class="num">$4,782</td><td class="num">$6,484</td><td class="num">$6,618</td><td class="num">$6,618</td><td class="num">$6,618</td><td class="num">$6,618</td></tr>
+          <tr><td>O-3 Captain</td><td class="num">$5,535</td><td class="num">$7,383</td><td class="num">$8,125</td><td class="num">$8,788</td><td class="num">$9,004</td><td class="num">$9,004</td></tr>
+          <tr><td>O-4 Major</td><td class="num">$6,294</td><td class="num">$7,881</td><td class="num">$8,816</td><td class="num">$9,888</td><td class="num">$10,402</td><td class="num">$10,510</td></tr>
+          <tr><td>O-5 Lt. Colonel</td><td class="num">$7,295</td><td class="num">$8,894</td><td class="num">$9,462</td><td class="num">$10,272</td><td class="num">$11,392</td><td class="num">$12,033</td></tr>
+          <tr><td>O-6 Colonel</td><td class="num">$8,751</td><td class="num">$10,245</td><td class="num">$10,725</td><td class="num">$10,784</td><td class="num">$12,480</td><td class="num">$13,751</td></tr>
+        </tbody>
+      </table></div>
+    </div>
+
+    <div class="sec src"><p class="note">Sources: <a href="https://www.navycs.com/charts/2026-military-pay-chart.html" target="_blank" rel="noopener">2026 military pay charts</a>, <a href="https://mst.military.com/daily-news/2025/12/19/trump-signs-law-2026-military-pay-raise-heres-how-much-youll-get.html" target="_blank" rel="noopener">Military.com on the 2026 raise and BAS</a>, <a href="https://www.everycrsreport.com/files/2026-01-26_IF10260_8992f98391f3a77e62042f7ace19721472bbd0fb.html" target="_blank" rel="noopener">CRS on military pay</a>, <a href="https://mymilitarybenefits.com/benefits/military-benefits-updates-for-2024/" target="_blank" rel="noopener">TRICARE cost summary</a>, <a href="https://www.travel.dod.mil/Allowances/Basic-Allowance-for-Housing/BAH-Rate-Lookup/" target="_blank" rel="noopener">DoD BAH lookup</a>. Benefit rules and dollar amounts change, so verify with your recruiter.</p></div>
+  </div>
+</section>
+
+<!-- ======================= WHY SERVE ======================= -->
+<section class="page" id="p-why-army" data-page="why-army" hidden>
+  <div class="wrap">
+    <div class="phead">
+      <span class="eyebrow"><i></i>The case, and the cost</span>
+      <h1>Why this beats <em>the cubicle</em></h1>
+      <p class="lead">A civilian entry-level cyber job gives you a ticket queue and a manager. A first Army cyber assignment can give you a team, a mission and a clearance. Here is how the two compare, and what you give up for it.</p>
+    </div>
+
+    <div class="sec">
+      <div class="tbl"><table>
+        <thead><tr><th>Factor</th><th>Army cyber officer</th><th>Typical civilian entry job</th></tr></thead>
+        <tbody>
+          <tr><td>Leadership</td><td>Lead soldiers and civilians in your first assignments</td><td>Individual contributor for years</td></tr>
+          <tr><td>Mission</td><td>Operations for the nation and the joint force, including offensive work no private employer can do</td><td>Protect or build one company's systems</td></tr>
+          <tr><td>Training</td><td>Six to nine months of paid cyber school, then more courses at each career stage</td><td>Self-funded certifications, or what the employer allows</td></tr>
+          <tr><td>Health care</td><td>TRICARE Prime with no enrollment fee, deductible or copays</td><td>Monthly premiums, deductibles and copays</td></tr>
+          <tr><td>Housing</td><td>Tax-free housing allowance or on-post housing</td><td>Rent from taxed pay</td></tr>
+          <tr><td>Retirement</td><td>Pension after 20 years plus a Thrift Savings Plan with up to 5% government contributions</td><td>401(k), with a match if offered</td></tr>
+          <tr><td>Time off</td><td>30 days of paid leave plus holidays</td><td>Commonly 10 to 20 days</td></tr>
+          <tr><td>Tuition</td><td>Tuition assistance and the GI Bill</td><td>Loans, or an employer benefit</td></tr>
+          <tr><td>Job security</td><td>Guaranteed pay and promotion path under a contract</td><td>At-will employment</td></tr>
+        </tbody>
+      </table></div>
+    </div>
+
+    <div class="sec">
+      <div class="sec-head"><span class="eyebrow"><i></i>What you take with you</span><h2>The <em>exit ramp</em> is wide.</h2></div>
+      <div class="grid">
+        <div class="panel"><h3>A clearance</h3><p>A Top Secret/SCI clearance is valuable to defense contractors, intelligence agencies and security firms that need cleared talent.</p></div>
+        <div class="panel"><h3>Leadership history</h3><p>Leading a team under pressure at 23 is a résumé line most civilian cyber professionals do not have until much later.</p></div>
+        <div class="panel"><h3>Education benefits</h3><p>The GI Bill can fund a graduate degree. Veterans also receive preference in many federal hiring decisions.</p></div>
+        <div class="panel"><h3>Certifications</h3><p>Army training and credentialing programs can add industry certifications that private employers recognize.</p></div>
+      </div>
+    </div>
+
+    <div class="sec">
+      <div class="sec-head"><span class="eyebrow"><i></i>The honest part</span><h2>What it <em>costs.</em></h2><p>A fair decision needs both columns. These are the trade-offs most officers mention.</p></div>
+      <div class="grid two">
+        <div class="panel">
+          <h3>Lifestyle</h3>
+          <ul class="ticks cost">
+            <li>You move to a new post every few years, and the Army has a large say in where.</li>
+            <li>You cannot quit midstream. A service obligation binds you for the length of your contract.</li>
+            <li>Cyber threats do not follow a duty schedule, so some weeks run long.</li>
+            <li>Deployments and temporary duty are part of the job.</li>
+          </ul>
+        </div>
+        <div class="panel">
+          <h3>Career</h3>
+          <ul class="ticks cost">
+            <li>Top private-sector cyber roles can pay more in cash than a mid-career officer earns.</li>
+            <li>You work under military law, a chain of command and fitness standards.</li>
+            <li>The clearance process is intrusive, and some assignments require a polygraph.</li>
+            <li>Commissioning does not guarantee Cyber, and Cyber does not guarantee your preferred post.</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <div class="sec">
+      <div class="panel" style="display:grid;gap:18px;justify-items:start">
+        <h3>If the trade sounds right, <em>start the path.</em></h3>
+        <p class="prose">The next step is a conversation with an Army officer recruiter. Bring questions about service obligations, branching and assignments, and ask for answers in writing.</p>
+        <div class="cta-row"><a class="btn primary" href="#join">See the process <span aria-hidden="true">→</span></a><a class="btn ghost" href="#benefits">Run the pay numbers</a></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ======================= RANKS ======================= -->
+<section class="page" id="p-ranks" data-page="ranks" hidden>
+  <div class="wrap">
+    <div class="phead">
+      <span class="eyebrow"><i></i>Ranks &amp; terms</span>
+      <h1>Ranks, <em>in order.</em></h1>
+      <p class="lead">The officer ladder from second lieutenant to general, what each rank usually does in cyber, and the 2026 base pay at a typical point in the grade. Glyphs are simplified drawings, not official insignia.</p>
+    </div>
+
+    <div class="sec">
+      <div class="ladder">
+        <div class="rank"><div class="glyph gold"><svg aria-hidden="true" style="width:30px;height:10px"><use href="#g-bar"/></svg></div><div><h4>Second Lieutenant <small>2LT · O-1</small></h4><p>Student at Cyber BOLC, then an assistant or team leader on a first assignment.</p></div><div class="pay"><b>$4,150</b><small>per month, under 2 yrs</small></div></div>
+        <div class="rank"><div class="glyph silver"><svg aria-hidden="true" style="width:30px;height:10px"><use href="#g-bar"/></svg></div><div><h4>First Lieutenant <small>1LT · O-2</small></h4><p>Promoted after about 18 months. Leads a team or section.</p></div><div class="pay"><b>$5,446</b><small>per month, 2+ yrs</small></div></div>
+        <div class="rank"><div class="glyph silver stack"><svg aria-hidden="true"><use href="#g-bar"/></svg><svg aria-hidden="true"><use href="#g-bar"/></svg></div><div><h4>Captain <small>CPT · O-3</small></h4><p>Around year four. Attends the Captains Career Course and leads a team, company or major mission element.</p></div><div class="pay"><b>$7,737</b><small>per month, 6+ yrs</small></div></div>
+        <div class="rank"><div class="glyph gold"><svg aria-hidden="true"><use href="#g-leaf"/></svg></div><div><h4>Major <small>MAJ · O-4</small></h4><p>Around year ten. Staff officer, operations planner or deputy in a cyber organization.</p></div><div class="pay"><b>$9,419</b><small>per month, 10+ yrs</small></div></div>
+        <div class="rank"><div class="glyph silver"><svg aria-hidden="true"><use href="#g-leaf"/></svg></div><div><h4>Lieutenant Colonel <small>LTC · O-5</small></h4><p>Around year sixteen. Commands a battalion or leads a senior staff section.</p></div><div class="pay"><b>$11,392</b><small>per month, 16+ yrs</small></div></div>
+        <div class="rank"><div class="glyph silver wide"><svg aria-hidden="true"><use href="#g-eagle"/></svg></div><div><h4>Colonel <small>COL · O-6</small></h4><p>Around year twenty-two. Commands a brigade, such as a cyber protection brigade, or holds a senior staff post.</p></div><div class="pay"><b>$13,751</b><small>per month, 20+ yrs</small></div></div>
+        <div class="rank"><div class="glyph silver"><svg aria-hidden="true"><use href="#g-star"/></svg></div><div><h4>Brigadier General <small>BG · O-7</small></h4><p>General officers lead commands and directorates. Brig. Gen. Matthew Lennox leads the Cyber National Mission Force.</p></div><div class="pay"><b>Up to $18,492</b><small>per month, capped by law</small></div></div>
+        <div class="rank"><div class="glyph silver"><svg aria-hidden="true"><use href="#g-star"/></svg><svg aria-hidden="true"><use href="#g-star"/></svg></div><div><h4>Major General <small>MG · O-8</small></h4><p>Leads divisions, centers of excellence and large commands.</p></div><div class="pay"><b>Up to $18,492</b><small>per month, capped by law</small></div></div>
+        <div class="rank"><div class="glyph silver"><svg aria-hidden="true"><use href="#g-star"/></svg><svg aria-hidden="true"><use href="#g-star"/></svg><svg aria-hidden="true"><use href="#g-star"/></svg></div><div><h4>Lieutenant General <small>LTG · O-9</small></h4><p>Three stars. The commander of Army Cyber Command, Lt. Gen. Christopher Eubank, holds this rank.</p></div><div class="pay"><b>Up to $18,492</b><small>per month, capped by law</small></div></div>
+        <div class="rank"><div class="glyph silver" style="flex-wrap:wrap;padding:4px"><svg aria-hidden="true" style="width:16px;height:16px"><use href="#g-star"/></svg><svg aria-hidden="true" style="width:16px;height:16px"><use href="#g-star"/></svg><svg aria-hidden="true" style="width:16px;height:16px"><use href="#g-star"/></svg><svg aria-hidden="true" style="width:16px;height:16px"><use href="#g-star"/></svg></div><div><h4>General <small>GEN · O-10</small></h4><p>Four stars. The commander of U.S. Cyber Command, Gen. Joshua Rudd, holds this rank.</p></div><div class="pay"><b>Up to $18,492</b><small>per month, capped by law</small></div></div>
+      </div>
+      <p class="note" style="margin-top:16px">Pay shown is 2026 basic pay at a typical point in each grade, before allowances. Promotion timing is approximate and depends on Army needs and selection boards.</p>
+    </div>
+
+    <div class="sec">
+      <div class="sec-head"><span class="eyebrow"><i></i>Career arc</span><h2>Thirty years, <em>to scale.</em></h2><p>Approximate years of service at each promotion. The dashed line marks 20 years, when the Blended Retirement System pension becomes available.</p></div>
+      <div class="panel" style="padding-bottom:24px">
+        <div class="arc" role="img" aria-label="Career timeline from 0 to 30 years: 2LT at 0, 1LT at about 1.5, CPT at about 4, MAJ at about 10, LTC at about 16, COL at about 22, general officer from about 26. Retirement eligibility at 20 years.">
+          <div class="axis"></div>
+          <div class="twenty"></div>
+          <div class="m up" style="--y:0"><b>2LT</b></div>
+          <div class="m down" style="--y:1.5"><b>1LT</b></div>
+          <div class="m up" style="--y:4"><b>CPT</b></div>
+          <div class="m up" style="--y:10"><b>MAJ</b></div>
+          <div class="m up" style="--y:16"><b>LTC</b></div>
+          <div class="m up" style="--y:22"><b>COL</b></div>
+          <div class="m down" style="--y:26"><b>GO</b></div>
+          <span class="tick" style="--y:0">0</span><span class="tick" style="--y:5">5</span><span class="tick" style="--y:10">10</span><span class="tick" style="--y:15">15</span><span class="tick hot" style="--y:20">20</span><span class="tick" style="--y:25">25</span><span class="tick" style="--y:30">30 yrs</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="sec">
+      <div class="sec-head"><span class="eyebrow"><i></i>Other ladders</span><h2>Warrant officers <em>and enlisted.</em></h2></div>
+      <div class="grid two">
+        <div class="panel"><h3>Warrant officers, W-1 to W-5</h3><p>Warrant officers are technical specialists who command by expertise instead of by unit. Cyber has its own warrant officer track, trained through the Warrant Officer Basic and Advanced courses at the Cyber School.</p></div>
+        <div class="panel"><h3>Enlisted soldiers, E-1 to E-9</h3><p>Private through Sergeant Major. Cyber Operations Specialists (17C) enter after Advanced Individual Training at the Cyber School and work on the same teams that officers lead.</p><div class="chips" style="margin-top:16px"><span class="chip">PV1</span><span class="chip">PV2</span><span class="chip">PFC</span><span class="chip">SPC / CPL</span><span class="chip">SGT</span><span class="chip">SSG</span><span class="chip">SFC</span><span class="chip">MSG / 1SG</span><span class="chip">SGM / CSM</span></div></div>
+      </div>
+    </div>
+
+    <div class="sec">
+      <div class="sec-head"><span class="eyebrow"><i></i>Glossary</span><h2>Terms you will <em>hear.</em></h2></div>
+      <label class="lbl" for="gsearch" style="display:block;margin-bottom:8px">Filter terms</label>
+      <input id="gsearch" type="search" placeholder="Try OCS, TRICARE, DODIN" autocomplete="off">
+      <div class="terms" id="terms">
+        <div class="term"><b>ACFT</b><span>Army Combat Fitness Test, the Army's physical fitness test.</span></div>
+        <div class="term"><b>ADSO</b><span>Active Duty Service Obligation. The time you owe after training or commissioning.</span></div>
+        <div class="term"><b>AFCT</b><span>Armed Forces Classification Test. An aptitude test some officer applicants take in place of the ASVAB.</span></div>
+        <div class="term"><b>AOC</b><span>Area of Concentration. An officer's specialty code, such as 17A.</span></div>
+        <div class="term"><b>ARCYBER</b><span>Army Cyber Command, headquartered at Fort Gordon, Georgia.</span></div>
+        <div class="term"><b>ASVAB</b><span>Armed Services Vocational Aptitude Battery. The enlistment aptitude test whose GT line score gates OCS.</span></div>
+        <div class="term"><b>BAH</b><span>Basic Allowance for Housing. Tax-free pay set by duty station, grade and dependents.</span></div>
+        <div class="term"><b>BAS</b><span>Basic Allowance for Subsistence. A flat, tax-free monthly food allowance.</span></div>
+        <div class="term"><b>BCT</b><span>Basic Combat Training. About 10 weeks of initial training for soldiers with no prior service.</span></div>
+        <div class="term"><b>BRS</b><span>Blended Retirement System. A pension at 20 years plus matched Thrift Savings Plan contributions.</span></div>
+        <div class="term"><b>CMF</b><span>Cyber Mission Force. U.S. Cyber Command's 133 operational teams.</span></div>
+        <div class="term"><b>CNMF</b><span>Cyber National Mission Force. A CYBERCOM subordinate command that defends the nation against major cyber threats.</span></div>
+        <div class="term"><b>CPT</b><span>Two meanings. Captain (the rank) and Cyber Protection Team (a defensive team type).</span></div>
+        <div class="term"><b>CWO-BOLC / CyBOLC</b><span>Cyber Warfare Officer Basic Officer Leader Course, taught at the Cyber School.</span></div>
+        <div class="term"><b>CYBERCOM</b><span>U.S. Cyber Command, the joint combatant command at Fort Meade.</span></div>
+        <div class="term"><b>DCO / OCO</b><span>Defensive and Offensive Cyberspace Operations.</span></div>
+        <div class="term"><b>DODIN</b><span>Department of Defense Information Network. The networks the military uses and defends.</span></div>
+        <div class="term"><b>EW</b><span>Electronic warfare. Using the electromagnetic spectrum to attack, protect or gain information.</span></div>
+        <div class="term"><b>GT score</b><span>General Technical line score from the ASVAB, built from verbal and arithmetic reasoning. OCS needs 110.</span></div>
+        <div class="term"><b>JFHQ-Cyber</b><span>Joint Force Headquarters-Cyber. A service element that supports CYBERCOM and combatant commanders.</span></div>
+        <div class="term"><b>MEPS</b><span>Military Entrance Processing Station, where applicants take medical and enlistment processing.</span></div>
+        <div class="term"><b>NSA</b><span>National Security Agency, co-located with CYBERCOM at Fort Meade.</span></div>
+        <div class="term"><b>OCS</b><span>Officer Candidate School. Twelve weeks at Fort Benning for the active Army.</span></div>
+        <div class="term"><b>PCS</b><span>Permanent Change of Station. A move to a new duty post, paid for by the Army.</span></div>
+        <div class="term"><b>ROTC</b><span>Reserve Officers' Training Corps. Officer training alongside a college degree.</span></div>
+        <div class="term"><b>TS/SCI</b><span>Top Secret with Sensitive Compartmented Information access. The clearance cyber officers need.</span></div>
+        <div class="term"><b>TDY</b><span>Temporary Duty. Work away from your home post for a limited time.</span></div>
+        <div class="term"><b>TRICARE</b><span>The military health program. Prime is the managed-care option for active duty.</span></div>
+        <div class="term"><b>TSP</b><span>Thrift Savings Plan, the federal 401(k)-style retirement account.</span></div>
+        <div class="term"><b>UCMJ</b><span>Uniform Code of Military Justice, the law that governs service members.</span></div>
+      </div>
+      <p class="empty" id="gempty" hidden>No terms match. Try a shorter search.</p>
+    </div>
+  </div>
+</section>
+
+</main>
+
+<footer>
+  <div class="wrap foot">
+    <div>
+      <a class="brand" href="#home" aria-label="Brass and Binary, home"><svg viewBox="0 0 26 26" aria-hidden="true"><circle cx="11" cy="13" r="8" fill="none" stroke="#e3b968" stroke-width="2"/><rect x="19.500" y="4" width="3" height="18" rx="1.500" fill="#eef1f6"/></svg>Brass &amp; Binary</a>
+      <p>An independent educational guide to U.S. Army cyber careers. It is not affiliated with, endorsed by or an official publication of the U.S. Army, the Department of Defense or any government agency, and it uses no official insignia. Requirements, pay and policies change. Confirm everything with an Army officer recruiter or goarmy.com before you act. Last checked October 26, 2026.</p>
+    </div>
+    <div>
+      <h5>Pages</h5>
+      <ul>
+        <li><a href="#army-cyber">Army Cyber</a></li>
+        <li><a href="#commands">Commands</a></li>
+        <li><a href="#bases">Bases</a></li>
+        <li><a href="#join">How to join</a></li>
+        <li><a href="#benefits">Pay &amp; benefits</a></li>
+        <li><a href="#why-army">Why serve</a></li>
+        <li><a href="#ranks">Ranks &amp; terms</a></li>
+      </ul>
+    </div>
+    <div class="src">
+      <h5>Start with the primary sources</h5>
+      <ul>
+        <li><a href="https://www.goarmy.com/" target="_blank" rel="noopener">GoArmy, the official Army recruiting site</a></li>
+        <li><a href="https://www.cybercom.mil/" target="_blank" rel="noopener">U.S. Cyber Command</a></li>
+        <li><a href="https://www.army.mil/" target="_blank" rel="noopener">Army.mil news</a></li>
+        <li><a href="https://www.travel.dod.mil/Allowances/Basic-Allowance-for-Housing/BAH-Rate-Lookup/" target="_blank" rel="noopener">DoD BAH rate lookup</a></li>
+        <li><a href="https://tricare.mil/" target="_blank" rel="noopener">TRICARE</a></li>
+      </ul>
+    </div>
+  </div>
+</footer>
+
+<div class="lens" id="lens" aria-hidden="true"><div class="lens-glass" id="lensGlass"></div></div>
+<div class="dot" id="dot" aria-hidden="true"><i></i></div>
+
+<script>
+(function(){
+  'use strict';
+  var $=function(s,r){return (r||document).querySelector(s)};
+  var $$=function(s,r){return Array.prototype.slice.call((r||document).querySelectorAll(s))};
+  var reduce=window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+  /* ---------- routing with smooth page transitions ---------- */
+  var pages={};
+  $$('.page').forEach(function(p){pages[p.getAttribute('data-page')]=p});
+  var navLinks=$$('[data-route]');
+  var current=null,busy=false,pending=null,enterTimer=null;
+  var sheet=$('#sheet'),menuBtn=$('#menuBtn');
+
+  function routeFromHash(){
+    var h=(location.hash||'').replace('#','');
+    return pages[h]?h:'home';
+  }
+  function markActive(id){
+    navLinks.forEach(function(a){
+      var on=a.getAttribute('data-route')===id;
+      a.classList.toggle('active',on);
+      if(on){a.setAttribute('aria-current','page')}else{a.removeAttribute('aria-current')}
+    });
+    moveIndicator();
+  }
+  function moveIndicator(){
+    var ind=$('.indicator'),a=$('.links a.active');
+    if(!ind)return;
+    if(!a||!a.offsetWidth){ind.style.opacity='0';return}
+    ind.style.opacity='1';
+    ind.style.width=a.offsetWidth+'px';
+    ind.style.transform='translateX('+a.offsetLeft+'px)';
+  }
+  function finishSwap(id){
+    var next=pages[id];
+    Object.keys(pages).forEach(function(k){if(k!==id){pages[k].hidden=true;pages[k].classList.remove('leaving','entering')}});
+    var wrap=$('.wrap',next);
+    if(wrap&&!reduce){Array.prototype.forEach.call(wrap.children,function(c,i){c.style.setProperty('--i',Math.min(i,8))})}
+    next.hidden=false;
+    next.classList.remove('leaving');
+    if(!reduce){next.classList.add('entering');clearTimeout(enterTimer);enterTimer=setTimeout(function(){next.classList.remove('entering')},1500)}
+    window.scrollTo(0,0);
+    var h1=$('h1',next);
+    if(h1){h1.setAttribute('tabindex','-1');try{h1.focus({preventScroll:true})}catch(e){}}
+    current=id;
+    busy=false;
+    onScroll();
+    if(pending&&pending!==current){var p=pending;pending=null;go(p)}else{pending=null}
+  }
+  function go(id){
+    if(current===null){
+      Object.keys(pages).forEach(function(k){pages[k].hidden=(k!==id)});
+      current=id;markActive(id);onScroll();return;
+    }
+    if(busy){pending=id;return}
+    if(id===current)return;
+    busy=true;
+    markActive(id);
+    var prev=pages[current];
+    prev.classList.remove('entering');
+    if(reduce){finishSwap(id)}
+    else{prev.classList.add('leaving');setTimeout(function(){finishSwap(id)},290)}
+  }
+  window.addEventListener('hashchange',function(){closeSheet();go(routeFromHash())});
+  window.addEventListener('resize',moveIndicator);
+  if(document.fonts&&document.fonts.ready){document.fonts.ready.then(moveIndicator)}
+
+  /* ---------- mobile sheet ---------- */
+  function openSheet(){sheet.classList.add('open');menuBtn.setAttribute('aria-expanded','true');document.documentElement.classList.add('locked')}
+  function closeSheet(){sheet.classList.remove('open');menuBtn.setAttribute('aria-expanded','false');document.documentElement.classList.remove('locked')}
+  menuBtn.addEventListener('click',function(){sheet.classList.contains('open')?closeSheet():openSheet()});
+  $$('#sheet a').forEach(function(a){a.addEventListener('click',closeSheet)});
+  document.addEventListener('keydown',function(e){if(e.key==='Escape')closeSheet()});
+
+  /* ---------- scroll-linked timeline ---------- */
+  function onScroll(){
+    $$('.steps').forEach(function(list){
+      var pg=list.closest('.page');
+      if(pg&&pg.hidden)return;
+      var r=list.getBoundingClientRect(),line=window.innerHeight*0.62;
+      var f=Math.max(0,Math.min(1,(line-r.top)/r.height));
+      list.style.setProperty('--fill',f.toFixed(3));
+      $$('.step',list).forEach(function(s){s.classList.toggle('reached',s.getBoundingClientRect().top<line)});
+    });
+  }
+  window.addEventListener('scroll',function(){window.requestAnimationFrame(onScroll)},{passive:true});
+  window.addEventListener('resize',onScroll);
+
+  /* ---------- panel spotlight ---------- */
+  document.addEventListener('pointermove',function(e){
+    var t=e.target;
+    var p=t&&t.closest?t.closest('.panel'):null;
+    if(!p)return;
+    var r=p.getBoundingClientRect();
+    p.style.setProperty('--mx',(e.clientX-r.left)+'px');
+    p.style.setProperty('--my',(e.clientY-r.top)+'px');
+  },{passive:true});
+
+  /* ---------- accordion ---------- */
+  $$('.acc>button').forEach(function(b){
+    b.addEventListener('click',function(){
+      var item=b.parentNode,open=item.classList.toggle('open');
+      b.setAttribute('aria-expanded',open?'true':'false');
+    });
+  });
+
+  /* ---------- pay estimator ---------- */
+  var GR=['O-1 Second Lieutenant','O-2 First Lieutenant','O-3 Captain','O-4 Major','O-5 Lieutenant Colonel','O-6 Colonel'];
+  var YOS=['Under 2','2 or more','3 or more','4 or more','6 or more','8 or more','10 or more','12 or more','14 or more','16 or more','18 or more','20 or more'];
+  var PAY=[
+    [4150,4320,5222,5222,5222,5222,5222,5222,5222,5222,5222,5222],
+    [4782,5446,6272,6484,6618,6618,6618,6618,6618,6618,6618,6618],
+    [5535,6273,6771,7383,7737,8125,8376,8788,9004,9004,9004,9004],
+    [6294,7286,7773,7881,8332,8816,9419,9888,10214,10402,10510,10510],
+    [7295,8219,8787,8894,9250,9462,9929,10272,10714,11392,11714,12033],
+    [8751,9614,10245,10245,10284,10725,10784,10784,11396,12480,13115,13751]
+  ];
+  var BAS=328.48;
+  var gradeSel=$('#grade'),yosSel=$('#yos'),bahIn=$('#bah'),taxIn=$('#tax');
+  function money(n,cents){return n.toLocaleString('en-US',{style:'currency',currency:'USD',minimumFractionDigits:cents?2:0,maximumFractionDigits:cents?2:0})}
+  GR.forEach(function(g,i){var o=document.createElement('option');o.value=i;o.textContent=g;gradeSel.appendChild(o)});
+  YOS.forEach(function(y,i){var o=document.createElement('option');o.value=i;o.textContent=y;yosSel.appendChild(o)});
+  function calc(){
+    var g=+gradeSel.value,y=+yosSel.value;
+    var bah=Math.max(0,+bahIn.value||0);
+    var t=(+taxIn.value)/100;
+    var base=PAY[g][y];
+    var month=base+BAS+bah;
+    var taxFree=(BAS+bah)*12;
+    var equiv=base*12+taxFree/(1-t);
+    $('#taxv').textContent=taxIn.value+'%';
+    $('#o-month').textContent=money(month);
+    $('#o-base').textContent=money(base);
+    $('#o-bah').textContent=money(bah);
+    $('#o-bas').textContent=money(BAS,true);
+    $('#o-year').textContent=money(month*12);
+    $('#o-equiv').textContent=money(Math.round(equiv/100)*100);
+    $('#b-base').style.flexGrow=base;
+    $('#b-bah').style.flexGrow=Math.max(bah,1);
+    $('#b-bas').style.flexGrow=BAS;
+  }
+  gradeSel.value=0;yosSel.value=0;
+  [gradeSel,yosSel,bahIn,taxIn].forEach(function(el){el.addEventListener('input',function(){
+    $$('#presets button').forEach(function(b){b.classList.remove('on')});calc()})});
+  $$('#presets button').forEach(function(b){
+    b.addEventListener('click',function(){
+      gradeSel.value=b.getAttribute('data-g');yosSel.value=b.getAttribute('data-y');bahIn.value=b.getAttribute('data-b');
+      $$('#presets button').forEach(function(x){x.classList.toggle('on',x===b)});
+      calc();
+    });
+  });
+  calc();
+
+  /* ---------- glossary filter ---------- */
+  var gs=$('#gsearch'),terms=$$('#terms .term'),gempty=$('#gempty');
+  gs.addEventListener('input',function(){
+    var q=gs.value.trim().toLowerCase(),shown=0;
+    terms.forEach(function(t){
+      var hit=!q||t.textContent.toLowerCase().indexOf(q)>-1;
+      t.hidden=!hit;if(hit)shown++;
+    });
+    gempty.hidden=shown>0;
+  });
+
+  /* ---------- glass lens cursor ---------- */
+  var fine=window.matchMedia('(hover: hover) and (pointer: fine)');
+  if(fine.matches){
+    var lens=$('#lens'),glass=$('#lensGlass'),dot=$('#dot');
+    var x=window.innerWidth/2,y=window.innerHeight/2,tx=x,ty=y,shown=false;
+    document.documentElement.classList.add('has-lens');
+    window.addEventListener('pointermove',function(e){
+      if(e.pointerType==='touch')return;
+      tx=e.clientX;ty=e.clientY;
+      if(!shown){shown=true;x=tx;y=ty;lens.classList.add('on');dot.classList.add('on')}
+      var el=e.target&&e.target.closest?e.target:null;
+      var hot=el&&el.closest('a,button,summary,.chip,.panel.has-arrow,.rank');
+      var inp=el&&el.closest('input,select,textarea');
+      glass.classList.toggle('grow',!!hot);
+      lens.classList.toggle('faint',!!inp);
+      dot.classList.toggle('hide',!!inp||!!hot);
+    },{passive:true});
+    document.documentElement.addEventListener('mouseleave',function(){shown=false;lens.classList.remove('on');dot.classList.remove('on')});
+    window.addEventListener('pointerdown',function(){glass.classList.add('press')});
+    window.addEventListener('pointerup',function(){glass.classList.remove('press')});
+    (function tick(){
+      var k=reduce?1:0.2;
+      x+=(tx-x)*k;y+=(ty-y)*k;
+      lens.style.transform='translate3d('+x.toFixed(1)+'px,'+y.toFixed(1)+'px,0)';
+      dot.style.transform='translate3d('+tx+'px,'+ty+'px,0)';
+      window.requestAnimationFrame(tick);
+    })();
+  }
+
+  go(routeFromHash());
+})();
+</script>
+
+</body></html>
